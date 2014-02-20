@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>socket admin</title>
+<script type="text/javascript" src="/site_media/js/jquery.min.js"></script>
+</head>
+<body>
+	<input id="manipulate" type="button"></input>
+<script type="text/javascript">
+    $("#manipulate").click(function(){
+        $.ajax({url:"{%url 'hardsocket:manipulateSocket'%}"});
+    });
+</script>
+</body>
