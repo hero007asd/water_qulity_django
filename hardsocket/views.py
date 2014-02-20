@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from hardsocket.models import SendLog
-from hardsocket.multiserverHex import manipulateSocket
+from hardsocket.multiserverHex import openSocket,closeSocket
 
 def showPh(request):
     query = ''
@@ -20,12 +20,11 @@ def showPh(request):
     return render_to_response('show_ph.html',{'logs':results})
 
 def manipulate(request):
-    try:
-        manipulateSocket()
-    except Exception, e:
-        raise e
-    finally:
-        print 'aaaa'
+    #TODO 500 happened if add the threading?
+    openSocket()
 
+def close(request):
+    closeSocket()
+    
 def socketAdmin(request):
     return render_to_response('hardsocket/socketAdmin.html')
