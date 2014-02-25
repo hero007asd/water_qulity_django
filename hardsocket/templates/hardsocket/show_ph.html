@@ -5,20 +5,23 @@
 <title>Insert title here</title>
 </head>
 <body>
+{%load pagination_tags%}
 	<table>
 		<tr>
 			<td>ph值</td>
 			<td>发送时间</td>
 			<td>发送设备号</td>
 		</tr>
-	{%for log in logs%}
+	{%autopaginate water%}
+	{%for w in water%}
 		<tr>
-			<td>{{log.ph}}</td>
-			<td>{{log.send_time}}</td>
-			<td>{{log.device_id}}</td>
+			<td>{{w.ph_value}}</td>
+			<td>{{w.send_time|date:"Y-m-d H:i:s"}}</td>
+			<td>{{w.device_id}}</td>
 		</tr>
 	{%endfor%}
 	</table>
-	
+	{% paginate %}
+
 </body>
 </html>

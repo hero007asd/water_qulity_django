@@ -5,6 +5,7 @@ import SocketServer
 import threading
 import myCrc
 from hardsocket.models import Water_param
+
 # use BaseRequestHandler not StreamRequestHandler
 class MyTcpRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
@@ -15,14 +16,14 @@ class MyTcpRequestHandler(SocketServer.BaseRequestHandler):
                 if not data:
                     print 'no data received'
                     break
-                # result = myCrc.exp_data(data)
+                result = myCrc.exp_data(data)
                 # self.request.send(result)
                 #TODO use thread to save into db
-                result = data
-                water = Water_param(ph_value=str(result))
-                water.save()
-                print 'result:',result
-                self.request.send('ok')
+                # result = data
+                # water = Water_param(ph_value=str(result))
+                # water.save()
+                # self.request.send('ok')
+                self.request.send(result)
 #             except:
 #                 print 'except happend'
 #                 #traceback.print_exc()
@@ -53,4 +54,4 @@ def closeSocket():
     server_thread.start()
                 
 # if __name__ == "__main__":
-#     manipulateSocket()
+#     openSocket()
