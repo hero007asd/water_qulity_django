@@ -9,20 +9,21 @@ class Device(m.Model):
     period_mins = m.CharField(max_length=2)
     
     def __str__(self):
-        return 'd_id:%s,d_info:%s,type_id:%s,status_id:%s,period_mins:%s' \
+        return 'd_id:%s,d_info:%s,type_id:%s,status_id:%s,period_mins:%s' 
             % (self.d_id, self.d_info, self.type_id, self.status_id, self.period_mins)
-    
-class SendLog(m.Model):
-    ph = m.CharField(max_length=10)
-    send_time = m.DateTimeField(auto_now_add=True)
-    device_id = m.CharField(max_length=50)
-    def __str__(self):
-        return 'ph:%s,send_time:%s,device_id:%s' % (self.ph,self.send_time,self.device_id)
-
+            
+#water_quality_log table     
 class Water_param(m.Model):
     device_id = m.ForeignKey(Device,blank=True,null=True)
-    ph_value = m.CharField(max_length=10)
-    value_1 = m.CharField(max_length=10,blank=True,null=True)
+    ph = m.CharField(max_length=10,blank=True,null=True)
+    turbidity = m.CharField(max_length=10,blank=True,null=True)
+    conductivity = m.CharField(max_length=10,blank=True,null=True)
+    d_oxygen = m.CharField(max_length=10,blank=True,null=True)
+    residual_chlorine = m.CharField(max_length=10,blank=True,null=True)
+    is_ok = m.IntegerField()
     send_time = m.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'device_id:%s,ph:%s,is_ok:%d' % (self.device_id, self.ph, self.is_ok)
 
 

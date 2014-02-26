@@ -20,7 +20,7 @@ class MyTcpRequestHandler(SocketServer.BaseRequestHandler):
                 # self.request.send(result)
                 #TODO use thread to save into db
                 # result = data
-                # water = Water_param(ph_value=str(result))
+                # water = Water_param(ph=str(result))
                 # water.save()
                 # self.request.send('ok')
                 self.request.send(result)
