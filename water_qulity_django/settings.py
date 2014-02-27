@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #
     'hardsocket',
+    'device',
     'pagination',
 )
 
@@ -87,11 +88,14 @@ USE_TZ = False#True
 
 STATIC_URL = '/static/'
 # add by tommy
-STATICFILES_DIRS=os.path.join('site_media')
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-)
+STATICFILES_DIRS=(
+    os.path.join(BASE_DIR,'assets'),
+    os.path.join(BASE_DIR,'my_static'),
+    )
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.core.context_processors.auth',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     'django.core.context_processors.request',
+# )

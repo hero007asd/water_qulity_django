@@ -1,6 +1,21 @@
 from django.shortcuts import render, render_to_response
-from hardsocket.models import SendLog, Water_param
+from hardsocket.models import Water_param
 from hardsocket.multiserverHex import openSocket,closeSocket
+from django.http import HttpResponse
+import json
+
+#====================About socket ============================================
+def manipulate(request):
+    #TODO 500 happened if add the threading?
+    openSocket()
+
+def close(request):
+    closeSocket()
+
+#======================client show ==================================================
+# def socketAdmin(request):
+#     return render_to_response('hardsocket/socketAdmin.html')
+
 
 def showPh(request):
     query = ''
@@ -17,12 +32,13 @@ def showPh(request):
 
     return render_to_response('hardsocket/show_ph.html',{'water':results})
 
-def manipulate(request):
-    #TODO 500 happened if add the threading?
-    openSocket()
+#===================for web==============================
 
-def close(request):
-    closeSocket()
-    
-def socketAdmin(request):
-    return render_to_response('hardsocket/socketAdmin.html')
+
+
+#===================for mobile====================================
+def showCity(request):
+    obj = {'ph':1,'do':2}
+    results = json.dumps(obj)
+
+    return HttpResponse(results)
