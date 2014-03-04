@@ -1,5 +1,5 @@
 '''
-@author: William
+@author: Tommy
 '''
 import struct
 dwPolynomial = 0x04C11DB7
@@ -21,8 +21,11 @@ def cal_crc(ptr):
     return my_crc
 
 def exp_data(data):
-    #TODO length is wrong
     all_len = len(data)
+    #length is wrong
+    if(all_len<11):
+        print 'wrong length,unknown device!'
+        return None
     r_sof0 = ord(data[0])
     r_sof1 = ord(data[1])    
     r_lenth = ord(data[2])
@@ -35,6 +38,7 @@ def exp_data(data):
     r_did6 = ord(data[9])
     r_did7 = ord(data[10])
     r_cmd = ord(data[11])
+    # r_data = []
     r_crc0 = '%02x' % ord(data[-4])
     r_crc1 = '%02x' % ord(data[-3])
     r_crc2 = '%02x' % ord(data[-2])
@@ -42,10 +46,9 @@ def exp_data(data):
     # crc 7F 7F 0a 11 22 33 44 55 66 77 88 10 01 FD 0E 3C 53
     lenth_data = all_len - 7 - 9
     my_crc = [r_lenth, r_did0, r_did1, r_did2, r_did3, r_did4, r_did5, r_did6, r_did7, r_cmd]
-    received_data = []
-    for x in range(lenth_data):
+    for x in xrange(lenth_data):
         my_crc.append(ord(data[11 + x + 1]))
-        received_data.append(ord(data[11 + x + 1]))
+        # r_data.append(ord(data[11 + x + 1]))
     mycrc32 = cal_crc(my_crc)
     mycrc0 = mycrc32[0:2]
     mycrc1 = mycrc32[2:4]
@@ -57,7 +60,7 @@ def exp_data(data):
     if((r_sof0 != 0x7f) or (r_sof1 != 0x7f)):
         print 'wrong head'
         return ret_pack(data,0x0A,0x91,[0x02])
-    #======================match length ===========================================
+    #======================match length =======================================
     #match len #match cmd=0x91 DATA[0]=0x01/0x02/0x03
     if(r_lenth != all_len-7):
         print 'wrong lenth'
@@ -71,17 +74,25 @@ def exp_data(data):
     #======================match cmd===========================================
     #match cmd=0x10
     if(cmd == '0x10'):
-        print 'did is online'
-        if 1:#already done
+        is_install = ord(data[12])
+        if is_install == 0x01:#already done
+            print 'did is already online'
             return ret_pack(data, 0x09, 0x10) 
-        else:#TODO first do
-            return ret_pack(data, len, cmd, received_data)
+        elif is_install == 0x00:#first do,5*60s=0x01,0x2c
+            print 'did is going to be online'
+            return ret_pack(data, 0x0d, 0x10, [0x01,0x2c,0x01,0x2c])
     #match cmd=0x20 data=null len = 0x09
     elif(cmd == '0x20'):
         print 'did is sending data'
-        #TODO add to mysql
+        #add to mysql by thread
+        add_to_db(data)
         return ret_pack(data, 0x09, 0x20)
-    
+    #TODO update in real time
+    elif(cmd == '0x21'):
+        pass
+    elif(cmd == '0x22'):
+        pass
+
 def ret_pack(raw_data,length,cmd,data=None):   
     did0 = ord(raw_data[3])
     did1 = ord(raw_data[4])
@@ -103,15 +114,12 @@ def ret_pack(raw_data,length,cmd,data=None):
     #TODO data chuli
     print 'crc1:',mycrc0,' ',mycrc1,' ',mycrc2,' ',mycrc3
     if data == None:
-        print 'data is None $$$$$$$$$$$$$'
         return struct.pack('BBBBBBBBBBBBBBBB',0x7f,0x7f,length,did0,did1,did2,did3,did4,did5,did6,did7,cmd,mycrc0,mycrc1,mycrc2,mycrc3)
     else:
         if len(data) == 1:
-            print 'data is 1 length $$$$$$$$$$$$$,data:',data[0]
             return struct.pack('BBBBBBBBBBBBBBBBB',0x7f,0x7f,length,did0,did1,did2,did3,did4,did5,did6,did7,cmd,data[0],mycrc0,mycrc1,mycrc2,mycrc3)
-        else:
-            print 'multi data ##############'
-            return struct.pack('BBBBBBBBBBBBBBBBB',0x7f,0x7f,length,did0,did1,did2,did3,did4,did5,did6,did7,cmd,data,mycrc0,mycrc1,mycrc2,mycrc3)
+        elif len(data) == 4:#default setting for device
+            return struct.pack('BBBBBBBBBBBBBBBBBBBB',0x7f,0x7f,length,did0,did1,did2,did3,did4,did5,did6,did7,cmd,data[0],data[1],data[2],data[3],mycrc0,mycrc1,mycrc2,mycrc3)
 
 
 def ret_crc(raw_data,length,cmd,data=None):
@@ -133,3 +141,30 @@ def ret_crc(raw_data,length,cmd,data=None):
     rtncrc1 = int(rtncrc32[4:6],16)
     rtncrc0 = int(rtncrc32[6:8],16)
     return [rtncrc3,rtncrc2,rtncrc1,rtncrc0]
+
+def add_to_db(received_data):
+    print received_data
+    # ph1 = received_data[12:]
+    # ph2 = 
+    # turbidity1 =
+    # turbidity2 = 
+    # rc1 =
+    # rc2 = 
+    # do1 =
+    # do2 = 
+    # conductivity1 =
+    # conductivity2 = 
+    # fluoride1 =
+    # fluoride2 = 
+    # temperature1 =
+    # temperature2 = 
+    # d_hcl1 =
+    # d_hcl2 = 
+    # d_na2co31 =
+    # d_na2co32 = 
+    # d_h2so41 =
+    # d_h2so42 = 
+    # d_naoh1 =
+    # d_naoh2 = 
+    # orp1 =
+    # orp2 = 
