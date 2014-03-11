@@ -4,6 +4,7 @@ from hardsocket.models import Water_param
 from hardsocket.multiserverHex import openSocket,closeSocket
 from django.http import HttpResponse
 import json
+import logging
 #====================About socket ============================================
 def manipulate(request):
     #TODO 500 happened if add the threading?
@@ -32,3 +33,7 @@ def showPh(request):
 
     return render_to_response('hardsocket/show_ph.html',{'water':results})
 
+def test_log(request):
+    log = logging.getLogger('socket.crc')
+    log.error('wrong happened!!!')
+    return HttpResponse('a')

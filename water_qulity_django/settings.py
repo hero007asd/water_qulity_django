@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     #
     'hardsocket',
     'device',
-    'pagination',
+    # 'pagination',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,7 +50,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #
-    'pagination.middleware.PaginationMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'water_qulity_django.urls'
@@ -99,3 +99,37 @@ STATICFILES_DIRS=(
 #     'django.core.context_processors.media',
 #     'django.core.context_processors.request',
 # )
+
+LOGGING = {
+    'version':1,
+    'disable_existing_loggers':False,
+    'formatters':{
+        'verbose':{
+            'format':'%(asctime)s %(levelname)-8s module:%(name)s %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters':{
+    },
+    'handlers':{
+        'handler_console':{
+            'level':'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'handler_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR,'debug.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers':{
+        'socket.crc':{
+            'handlers':['handler_file'],
+            'level':'ERROR',
+        }
+    },
+}

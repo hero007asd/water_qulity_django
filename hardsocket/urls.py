@@ -5,6 +5,7 @@ urlpatterns = patterns('',
     url(r'^index/$',views.showPh,name='showPH'),
     url(r'^manipulateSocket/$',views.manipulate,name='manipulateSocket'),
     url(r'^socketAdmin/$',TemplateView.as_view(template_name='hardsocket/socketAdmin.html'),name='socketAdmin'),
+    url(r'^test_log/$',views.test_log),
     #for mobile 
     url(r'^showCurOverview/$',viewsmobile.showCurOverview),
     url(r'^showOverview/$',viewsmobile.showOverview),
