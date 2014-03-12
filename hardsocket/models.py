@@ -15,12 +15,19 @@ from device import models
 
 #water_quality_log table     
 class Water_param(m.Model):
-    device_id = m.ForeignKey(models.Device,blank=True,null=True)
-    ph = m.CharField(max_length=10,blank=True,null=True)
-    turbidity = m.CharField(max_length=10,blank=True,null=True)
-    conductivity = m.CharField(max_length=10,blank=True,null=True)
-    d_oxygen = m.CharField(max_length=10,blank=True,null=True)
-    residual_chlorine = m.CharField(max_length=10,blank=True,null=True)
+    device = m.ForeignKey(models.Device,blank=True,null=True)
+    ph = m.CharField(max_length=20,blank=True,null=True)
+    turbidity = m.CharField(max_length=20,blank=True,null=True)
+    rc = m.CharField(max_length=20,blank=True,null=True)
+    d_oxygen = m.CharField(max_length=20,blank=True,null=True)
+    conductivity = m.CharField(max_length=20,blank=True,null=True)
+    fluoride = m.CharField(max_length=20,blank=True,null=True)
+    temperature = m.CharField(max_length=20,blank=True,null=True)
+    d_hcl = m.CharField(max_length=20,blank=True,null=True)
+    d_na2co3 = m.CharField(max_length=20,blank=True,null=True)
+    d_h2so4 = m.CharField(max_length=20,blank=True,null=True)
+    d_naoh = m.CharField(max_length=20,blank=True,null=True)
+    orp = m.CharField(max_length=20,blank=True,null=True)
     is_ok = m.IntegerField()
     send_time = m.DateTimeField(auto_now_add=True)
 

@@ -1,33 +1,30 @@
 '''
 @author: William
+socket server
 '''
 import SocketServer
 import threading
-import myCrc
+import logging
+import mydatahandle
 from hardsocket.models import Water_param
 
+log = logging.getLogger('socket.crc')
 # use BaseRequestHandler not StreamRequestHandler
 class MyTcpRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
-        print 'connected by: %s' % self.client_address[0]
+        log.info('connected by: %s' % self.client_address[0])
         while True:
-#             try:
+            try:
                 data = self.request.recv(1024)
                 if not data:
-                    print 'no data received'
+                    log.warn('no data received,close client')
                     break
-                result = myCrc.exp_data(data)
-                # self.request.send(result)
-                #TODO use thread to save into db
-                # result = data
-                # water = Water_param(ph=str(result))
-                # water.save()
-                # self.request.send('ok')
+                result = mydatahandle.handle_data(data)
                 self.request.send(result)
-#             except:
-#                 print 'except happend'
-#                 #traceback.print_exc()
-#                 break
+            except Exception,e:
+                # log = logging.getLogger('socket.crc')
+                log.exception(e)
+                # break
 class MyTcpServer(SocketServer.ThreadingMixIn,SocketServer.TCPServer):
     pass
 
@@ -35,9 +32,7 @@ def openSocket():
     host = ''
     port = 21567
     addr = (host, port)
-    print 'server is ready'
-    # myServer = SocketServer.ThreadingTCPServer(addr, MyStreamRequestHandler)
-    # server.serve_forever()
+    log.info('server is ready')
     myServer = MyTcpServer(addr,MyTcpRequestHandler)
     server_thread = threading.Thread(target=myServer.serve_forever)
     server_thread.daemon = True
@@ -53,5 +48,3 @@ def closeSocket():
     server_thread.daemon = True
     server_thread.start()
                 
-# if __name__ == "__main__":
-#     openSocket()

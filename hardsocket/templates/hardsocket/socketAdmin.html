@@ -6,7 +6,7 @@
 <script type="text/javascript" src="/site_media/js/jquery.min.js"></script>
 </head>
 <body>
-	<input id="manipulate" type="button"></input>
+	<input id="manipulate" type="button" name="manipulate" value="开启"></input>
 <script type="text/javascript">
     $("#manipulate").click(function(){
         $.ajax({url:"{%url 'hardsocket:manipulateSocket'%}"});

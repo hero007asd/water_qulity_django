@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render, render_to_response
-from hardsocket.models import Water_param
-from hardsocket.multiserverHex import openSocket,closeSocket
+from hardsocket.mymultiserver import openSocket,closeSocket
 from django.http import HttpResponse
 import json
 import logging
 #====================About socket ============================================
 def manipulate(request):
-    #TODO 500 happened if add the threading?
     openSocket()
 
 def close(request):

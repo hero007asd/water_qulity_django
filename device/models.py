@@ -18,19 +18,19 @@ class Waterworks(m.Model):
 	w_name = m.CharField(max_length=100,blank=True,null=True)
 	parent_id = m.IntegerField()
 	level_id = m.IntegerField()
-	corp_id = m.ForeignKey(Watercorp)
+	corp = m.ForeignKey(Watercorp)
 
 
 
 class Street(m.Model):
 	street_name = m.CharField(max_length=100,blank=True,null=True)
-	area_id = m.ForeignKey(Area)
-	w_id = m.ForeignKey(Waterworks)
+	area = m.ForeignKey(Area)
+	waterworks = m.ForeignKey(Waterworks)
 		
 class Device(m.Model):
 	device_info = m.CharField(max_length=200,blank=True,null=True)
-	area_id = m.ForeignKey(Area)
-	street_id = m.ForeignKey(Street)
+	area = m.ForeignKey(Area)
+	street = m.ForeignKey(Street)
 	type_id = m.IntegerField()
 	status_id = m.IntegerField()
 	Period_send = m.IntegerField()

@@ -115,12 +115,12 @@ LOGGING = {
     },
     'handlers':{
         'handler_console':{
-            'level':'ERROR',
+            'level':'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
         'handler_file': {
-            'level': 'ERROR',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR,'debug.log'),
             'formatter': 'verbose',
@@ -128,8 +128,8 @@ LOGGING = {
     },
     'loggers':{
         'socket.crc':{
-            'handlers':['handler_file'],
-            'level':'ERROR',
+            'handlers':['handler_console'],
+            'level':'INFO',
         }
     },
 }
