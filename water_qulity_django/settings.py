@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
 Django settings for water_qulity_django project.
 
