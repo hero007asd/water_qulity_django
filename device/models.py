@@ -28,6 +28,7 @@ class Street(m.Model):
 	waterworks = m.ForeignKey(Waterworks)
 		
 class Device(m.Model):
+	device_id = m.CharField(max_length=50)
 	device_info = m.CharField(max_length=200,blank=True,null=True)
 	area = m.ForeignKey(Area)
 	street = m.ForeignKey(Street)

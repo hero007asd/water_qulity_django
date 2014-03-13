@@ -72,7 +72,7 @@ def handle_data(data):
     elif(r_cmd == 0x20):
         print 'did is sending data'
         #TODO add to mysql by thread
-        mydbhandle.add_to_db(data)
+        rest = mydbhandle.add_to_db(data)
         return ret_pack(data, 0x0a, 0x20,[0x00,])
     #else cmd is unknown
     return ret_pack(data, 0x0a, 0x91,[0x04,])
