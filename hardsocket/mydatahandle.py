@@ -4,7 +4,7 @@ handle data
 '''
 import struct
 import logging
-import mycrc
+import myCrc
 import mydbhandle
 
 def handle_data(data):
@@ -36,7 +36,7 @@ def handle_data(data):
     for x in xrange(lenth_data):
         my_crc.append(ord(data[11 + x + 1]))
         # r_data.append(ord(data[11 + x + 1]))
-    mycrc32 = mycrc.cal_crc(my_crc)
+    mycrc32 = myCrc.cal_crc(my_crc)
     mycrc0 = mycrc32[0:2]
     mycrc1 = mycrc32[2:4]
     mycrc2 = mycrc32[4:6]
@@ -119,7 +119,7 @@ def ret_crc(raw_data,length,cmd,data=None):
     if data != None:
         for i in data:
             return_crc.append(i)
-    rtncrc32 = mycrc.cal_crc(return_crc)
+    rtncrc32 = myCrc.cal_crc(return_crc)
     rtncrc3 = int(rtncrc32[0:2],16)
     rtncrc2 = int(rtncrc32[2:4],16)
     rtncrc1 = int(rtncrc32[4:6],16)
