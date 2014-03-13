@@ -1,0 +1,6 @@
+<uwsgi>
+    <socket>0.0.0.0:8000</socket>
+    <chdir>/home/order/tommy/water_qulity_django/</chdir>
+    <pythonpath>..</pythonpath>
+    <module>django_wsgi</module>
+</uwsgi>
