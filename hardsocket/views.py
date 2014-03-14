@@ -6,7 +6,11 @@ import json
 import logging
 #====================About socket ============================================
 def manipulate(request):
-    openSocket()
+    try:
+        openSocket()
+    except Exception, e:
+        return HttpResponse('open socket is already open')
+    return HttpResponse('open socket success')
 
 def close(request):
     closeSocket()

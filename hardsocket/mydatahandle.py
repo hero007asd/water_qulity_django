@@ -7,6 +7,7 @@ import logging
 import myCrc
 import mydbhandle
 
+log = logging.getLogger('socket.crc')
 def handle_data(data):
     all_len = len(data)
     #length is wrong
@@ -44,33 +45,34 @@ def handle_data(data):
     #======================match SOF===========================================
     #match 0x7f 0x7f #match cmd=0x91 DATA[0]=0x01/0x02/0x03
     if((r_sof0 != 0x7f) or (r_sof1 != 0x7f)):
-        print 'wrong head'
+        # print 'wrong head'
+        log.warning('wrong head')
         return ret_pack(data,0x0A,0x91,[0x02,])
     #======================match length =======================================
     #match len #match cmd=0x91 DATA[0]=0x01/0x02/0x03
     if(r_lenth != all_len-7):
-        print 'wrong lenth'
+        log.warning('wrong lenth')
         return ret_pack(data,0x0A,0x91, [0x03,])
     #======================match crc===========================================
     #match crc32 #match cmd=0x91 DATA[0]=0x01/0x02/0x03
     if (mycrc0 != r_crc0) or (mycrc1 != r_crc1) or (mycrc2 != r_crc2) or (mycrc3 != r_crc3):
-        print 'wrong crc'
+        log.warning('wrong crc')
         return ret_pack(data,0x0A,0x91, [0x01,])
     #======================match cmd===========================================
     #match cmd=0x10
     if(r_cmd == 0x10):
         is_install = ord(data[12])
         if is_install == 0x01:#already done
-            print 'did is already online'
+            log.warning('did is already online')
             # return ret_pack(data, 0x09, 0x10)
             return ret_pack(data, 0x0a, 0x10,[0x00,])
         elif is_install == 0x00:#first do,5*60s=0x01,0x2c
-            print 'did is going to be online'
+            log.warning('did is going to be online')
             # return ret_pack(data, 0x0d, 0x10, [0x01,0x2c,0x01,0x2c])
             return ret_pack(data, 0x0e, 0x10, [0x00,0x00,0x3c,0x00,0x01])
     #match cmd=0x20 data=null len = 0x09
     elif(r_cmd == 0x20):
-        print 'did is sending data'
+        log.info('did is sending data')
         #TODO add to mysql by thread
         rest = mydbhandle.add_to_db(data)
         return ret_pack(data, 0x0a, 0x20,[0x00,])
