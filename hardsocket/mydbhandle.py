@@ -10,7 +10,7 @@ insert into db with water's param
 rec_data is a stream of data from socket
 '''
 def add_to_db(rec_data):
-    device_id = struct.unpack('Q',rec_data[3:11])[0]
+    device_id = struct.unpack('q',rec_data[3:11])[0]
     a = rec_data[12:-4]
     ph1 = struct.unpack('I',a[0:4][::-1])[0]
     ph2 = struct.unpack('B',a[4])[0]

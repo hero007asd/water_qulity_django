@@ -8,7 +8,7 @@ from device import models
 #     type_id = m.CharField(max_length=50)
 #     status_id = m.CharField(max_length=2)
 #     period_mins = m.CharField(max_length=2)
-    
+        
 #     def __str__(self):
 #         return 'd_id:%s,d_info:%s,type_id:%s,status_id:%s,period_mins:%s' 
 #             % (self.d_id, self.d_info, self.type_id, self.status_id, self.period_mins)
