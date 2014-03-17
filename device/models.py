@@ -35,3 +35,7 @@ class Device(m.Model):
 	type_id = m.IntegerField()
 	status_id = m.IntegerField()
 	Period_send = m.IntegerField()
+	# add by tommy 20140317
+	x_pos = m.CharField(max_length=10,blank=True,null=True)
+	y_pos = m.CharField(max_length=10,blank=True,null=True)
+

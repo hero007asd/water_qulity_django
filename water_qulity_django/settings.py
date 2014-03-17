@@ -64,9 +64,19 @@ WSGI_APPLICATION = 'water_qulity_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME': os.path.join('waterqulity.db'),
+        'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
+        'NAME': 'water',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        # 'PASSWORD': '',
+        # 'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
+    # 'default': {
+    #     'ENGINE':'django.db.backends.sqlite3',
+    #     'NAME': os.path.join('waterqulity.db'),
+    # }
 }
 
 # Internationalization
@@ -100,7 +110,7 @@ STATICFILES_DIRS=(
 #     'django.core.context_processors.media',
 #     'django.core.context_processors.request',
 # )
-
+# ADMIN_MEDIA_PREFIX = '/static/admin/'
 LOGGING = {
     'version':1,
     'disable_existing_loggers':False,
