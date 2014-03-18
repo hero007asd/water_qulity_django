@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^getStreets/$',viewsmobile.getStreets),
     #for web
     url(r'^getAllCorpAvgInfo/$',viewsweb_new.getAllCorpAvgInfo),
-    url(r'^getCityReports/$',viewsweb.getCityReports),
+    url(r'^getAllCorpReports/$',viewsweb_new.getAllCorpReports),
     url(r'^getOneSpotInfo/$',viewsweb.getOneSpotInfo),
     url(r'^getOneCorpInfo/$',viewsweb.getOneCorpInfo),
     url(r'^getOneCorpReports/$',viewsweb.getOneCorpReports),

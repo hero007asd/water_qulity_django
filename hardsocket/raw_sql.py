@@ -40,19 +40,19 @@ def getAllSpot(city_id):
 import datetime
 today = datetime.datetime.now()
 timespan = today.weekday()
-def getFirstdayOfWeek():
-    return firstday = datetime.datetime.now()-datetime.timedelta(days=int(timespan))
-def getLastdayOfWeek():
-    return getFirstdayOfWeek()+datetime.timedelta(days=6)
+# def getFirstdayOfWeek():
+#     return firstday = datetime.datetime.now()-datetime.timedelta(days=int(timespan))
+# def getLastdayOfWeek():
+#     return getFirstdayOfWeek()+datetime.timedelta(days=6)
 
 def getCorpTodayReports(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as corp_ph,\
-        avg(c.conductivity) as corp_conductivity,\
-        avg(c.d_oxygen) as corp_DO,\
-        avg(c.rc) as corp_rc,\
-        avg(c.turbidity) as corp_turbidity,\
-        avg(c.temperature) as corp_temp \
+        avg(c.ph) as day_ph,\
+        avg(c.conductivity) as day_conductivity,\
+        avg(c.d_oxygen) as day_DO,\
+        avg(c.rc) as day_rc,\
+        avg(c.turbidity) as day_turbidity,\
+        avg(c.temperature) as day_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -67,12 +67,12 @@ def getCorpTodayReports(city_id):
 
 def getCorpWeekReports(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as corp_ph,\
-        avg(c.conductivity) as corp_conductivity,\
-        avg(c.d_oxygen) as corp_DO,\
-        avg(c.rc) as corp_rc,\
-        avg(c.turbidity) as corp_turbidity,\
-        avg(c.temperature) as corp_temp \
+        avg(c.ph) as week_ph,\
+        avg(c.conductivity) as week_conductivity,\
+        avg(c.d_oxygen) as week_DO,\
+        avg(c.rc) as week_rc,\
+        avg(c.turbidity) as week_turbidity,\
+        avg(c.temperature) as week_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -85,6 +85,25 @@ def getCorpWeekReports(city_id):
         GROUP BY b.corp_id'
     return __my_custome_sql(sql)
 
+def getCorpMonthReports(city_id):
+    sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
+        avg(c.ph) as month_ph,\
+        avg(c.conductivity) as month_conductivity,\
+        avg(c.d_oxygen) as month_DO,\
+        avg(c.rc) as month_rc,\
+        avg(c.turbidity) as month_turbidity,\
+        avg(c.temperature) as month_temp \
+        FROM device_watercorp a \
+        LEFT JOIN device_device b \
+        ON a.id = b.corp_id \
+        LEFT JOIN hardsocket_water_param c \
+        ON c.device_id = b.id \
+        AND TO_DAYS(c.send_time) = TO_DAYS(now()) \
+        LEFT JOIN device_area d \
+        ON b.area_id = d.id \
+        AND d.parent_id = 310000 \
+        GROUP BY b.corp_id'
+    return __my_custome_sql(sql)
 #=============================================
 
 
