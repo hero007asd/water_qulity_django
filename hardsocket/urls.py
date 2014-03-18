@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     #for web
     url(r'^getAllCorpAvgInfo/$',viewsweb_new.getAllCorpAvgInfo),
     url(r'^getAllCorpReports/$',viewsweb_new.getAllCorpReports),
+    url(r'^getSubCorpReports/$',viewsweb_new.getSubCorpReports),
     url(r'^getOneSpotInfo/$',viewsweb.getOneSpotInfo),
     url(r'^getOneCorpInfo/$',viewsweb.getOneCorpInfo),
     url(r'^getOneCorpReports/$',viewsweb.getOneCorpReports),

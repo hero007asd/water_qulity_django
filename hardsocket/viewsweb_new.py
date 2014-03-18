@@ -11,23 +11,21 @@ def getAllCorpAvgInfo(request):
 
     obj = {'corp_info':raw_sql.getAllCorpAvgInfo(city_id),'spot_info':raw_sql.getAllSpot(city_id)}
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
-    # return HttpResponse(results)
-    c = request.GET['jsonpcallback']
-    print 'jsonp:',c
-    callback = '%s(%s)' % (c,str(obj).decode('gb2312').encode('utf8'))
-    return HttpResponse(callback)
+    return HttpResponse(results)
 
 def getAllCorpReports(request):
     city_id = request.GET['city_id']
     print request.GET['city_id']
     obj = {'todayInfo':raw_sql.getCorpTodayReports(city_id),'weekInfo':raw_sql.getCorpWeekReports(city_id),'MonthInfo':raw_sql.getCorpMonthReports(city_id)}
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
-    print results
-    # return HttpResponse(results)
-    c = request.GET['jsonpcallback']
-    print 'jsonp:',c
-    callback = '%s(%s)' % (c,obj)
-    return HttpResponse(callback)
+    return HttpResponse(results)
+
+def getSubCorpReports(request):
+    corp_id = request.GET['corp_id']
+    print request.GET['corp_id']
+    obj = {'todayInfo':raw_sql.getSubCorpTodayReports(corp_id),'weekInfo':raw_sql.getSubCorpWeekReports(corp_id),'MonthInfo':raw_sql.getSubCorpMonthReports(corp_id)}
+    results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
+    return HttpResponse(results)
 
 def getOneSpotInfo(request):
     print request.GET['spot_id']
