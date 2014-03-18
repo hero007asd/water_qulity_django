@@ -1,14 +1,15 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render, render_to_response
-from hardsocket.models import Water_param
+from hardsocket import raw_sql
 from hardsocket.mymultiserver import openSocket,closeSocket
 from django.http import HttpResponse
 import json
 
 #===================for Web====================================
 def getAllCorpAvgInfo(request):
-    print request.GET['city_id']
-    obj ={'corp_info':[{'corp_id':'1','corp_name':'上海自来水有限公司','corp_ph':'6.9','corp_conductivity':'1.2','corp_DO':'4','corp_rc':'0.4','corp_turbidity':'0.8','corp_temp':'30'},{'corp_id':'2','corp_name':'上海市北自来水有限公司','corp_ph':'6.9','corp_conductivity':'1.2','corp_DO':'4','corp_rc':'0.4','corp_turbidity':'0.8','corp_temp':'30'}],'spot_info':[{'spot_id':'1','spot_status':'0','x_pos':'550','y_pos':'240'},{'spot_id':'2','spot_status':'1','x_pos':'500','y_pos':'200'}]}
+    city_id = request.GET['city_id']
+
+    obj = {'corp_info':raw_sql.getAllCorpAvgInfo(city_id),'spot_info':raw_sql.getAllSpot(city_id)}
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 

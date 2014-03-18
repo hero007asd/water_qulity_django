@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django.conf.urls import patterns, url
 from django.views.generic.base import TemplateView
-from hardsocket import  views,viewsmobile,viewsweb
+from hardsocket import  views,viewsmobile,viewsweb,viewsweb_new
 urlpatterns = patterns('',
     url(r'^index/$',views.showPh,name='showPH'),
     url(r'^manipulateSocket/$',views.manipulate,name='manipulateSocket'),
@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^showCurStreetValue/$',viewsmobile.showCurStreetValue),
     url(r'^getStreets/$',viewsmobile.getStreets),
     #for web
-    url(r'^getAllCorpAvgInfo/$',viewsweb.getAllCorpAvgInfo),
+    url(r'^getAllCorpAvgInfo/$',viewsweb_new.getAllCorpAvgInfo),
     url(r'^getCityReports/$',viewsweb.getCityReports),
     url(r'^getOneSpotInfo/$',viewsweb.getOneSpotInfo),
     url(r'^getOneCorpInfo/$',viewsweb.getOneCorpInfo),

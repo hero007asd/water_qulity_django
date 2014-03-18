@@ -65,10 +65,10 @@ WSGI_APPLICATION = 'water_qulity_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
-        'NAME': 'water',
+        'NAME': 'water_quanlity',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'PASSWORD': 'honest1101',
+        'HOST': '192.168.8.65',
         # 'PASSWORD': '',
         # 'HOST': '127.0.0.1',
         'PORT': '3306',
