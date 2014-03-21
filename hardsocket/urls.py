@@ -17,9 +17,13 @@ urlpatterns = patterns('',
     url(r'^getAllCorpAvgInfo/$',viewsweb_new.getAllCorpAvgInfo),
     url(r'^getAllCorpReports/$',viewsweb_new.getAllCorpReports),
     url(r'^getSubCorpReports/$',viewsweb_new.getSubCorpReports),
-    url(r'^getOneSpotInfo/$',viewsweb.getOneSpotInfo),
-    url(r'^getOneCorpInfo/$',viewsweb.getOneCorpInfo),
-    url(r'^getOneCorpReports/$',viewsweb.getOneCorpReports),
-    url(r'^getAreaAvgInfo/$',viewsweb.getAreaAvgInfo),
-    url(r'^getOneAreaInfo/$',viewsweb.getOneAreaInfo),
+    url(r'^getCorpTrend/$',viewsweb_new.getCorpTrend),
+    url(r'^getSubCorpTrend/$',viewsweb_new.getSubCorpTrend),
+
+    url(r'^getOneSpotInfo/$',viewsweb_new.getOneSpotInfo),
+    url(r'^getSpotDetailInfo/$',viewsweb_new.getSpotDetailInfo),
+    
+    url(r'^getOneCorpInfo/$',viewsweb_new.getOneCorpInfo),
+    url(r'^getAreaAvgInfo/$',viewsweb_new.getAreaAvgInfo),
+    url(r'^getOneAreaInfo/$',viewsweb_new.getOneAreaInfo),
 )

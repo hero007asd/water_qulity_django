@@ -27,9 +27,45 @@ def getSubCorpReports(request):
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 
+def getCorpTrend(request):
+    city_id = request.GET['corp_id']
+    reports_type = request.GET['reports_type']
+    obj = None
+    if reports_type == '1':
+        obj = raw_sql.getSubCorpDayTrend(city_id)
+    elif reprots_type == '2':
+        obj = raw_sql.getSubCorpWeekTrend(city_id)
+    elif reprots_type == '3':
+        obj = raw_sql.getSubCorpMonthTrend(city_id)
+    results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
+    return HttpResponse(results)
+
+def getSubCorpTrend(request):
+    corp_id = request.GET['corp_id']
+    reports_type = request.GET['reports_type']
+    obj = None
+    if reports_type == '1':
+        obj = {raw_sql.getCorpDayTrend(corp_id)}
+    elif reprots_type == '2':
+        obj = {raw_sql.getCorpWeekTrend(corp_id)}
+    elif reprots_type == '3':
+        obj = {raw_sql.getCorpMonthTrend(corp_id)}
+    results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
+    return HttpResponse(results)
+
 def getOneSpotInfo(request):
-    print request.GET['spot_id']
-    obj = {'spot_id':'1','corp_name':'上海自来水公司','area_name':'浦东新区','spot_name':'XX检测点','spot_ph':'6.9','spot_conductivity':'1.2','spot_DO':'4','spot_rc':'0.4','spot_turbidity':'0.8','spot_temp':'30' ,'ph_status':'1','turbidity_status':'1','conductivity_status':'1','do_status':'1','rc_status':'1','temp_status':'1'}
+    spot_id = request.GET['spot_id']
+    obj = raw_sql.getOneSpotInfo(spot_id)
+    obj[0]['last_time'] = str(obj[0]['last_time'])
+    results = json.dumps(obj[0],ensure_ascii=False,separators=(',',':'))
+    return HttpResponse(results)
+
+def getSpotDetailInfo(request):
+    spot_id = request.GET['spot_id']
+    obj = raw_sql.getSpotDetailInfo(spot_id)
+    for i in obj:
+        i['last_time'] = str(i['last_time'])
+    obj = {'spot_id':obj[0]['spot_id'],'corp_name':obj[0]['corp_name'],'area_name':obj[0]['area_name'],'spot_name':obj[0]['spot_name'],'spt_detail':obj}
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 
@@ -39,12 +75,6 @@ def getOneCorpInfo(request):
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 
-def getOneCorpReports(request):
-    print request.GET['corp_id']
-    print request.GET['reports_type']
-    obj = [{'corp_name':'自来水公司','corp_ph':'6.9','corp_conductivity':'1.2','corp_DO':'4','corp_rc':'0.4','corp_turbidity':'0.8','corp_temp':'30','time':'2014-03-04 16:24:23'},{'corp_name':'自来水公司','corp_ph':'8.2','corp_conductivity':'1.2','corp_DO':'4','corp_rc':'0.4','corp_turbidity':'0.8','corp_temp':'30','time':'2014-03-05 16:24:23'}]
-    results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
-    return HttpResponse(results)
 
 def getAreaAvgInfo(request):
     print request.GET['city_id']
