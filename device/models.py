@@ -11,11 +11,13 @@ class Area(m.Model):
 class Watercorp(m.Model):
 	corp_name=m.CharField(max_length=100,blank=True,null=True)
 	area = m.ForeignKey(Area,blank=True,null=True)
+	tel_no = m.CharField(max_length =100,blank=True,null=True)
 
 
 class WaterSubCorp(m.Model):
 	sub_corp_name = m.CharField(max_length=100,blank=True,null=True)
 	corp = m.ForeignKey(Watercorp)
+	tel_no = m.CharField(max_length =100,blank=True,null=True)
 
 class Street(m.Model):
 	street_name = m.CharField(max_length=100,blank=True,null=True)

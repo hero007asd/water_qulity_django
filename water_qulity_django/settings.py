@@ -67,8 +67,8 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
         'NAME': 'water_quanlity',
         'USER': 'root',
-        'PASSWORD': 'honest1101',
-        'HOST': '192.168.8.65',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         # 'PASSWORD': '',
         # 'HOST': '127.0.0.1',
         'PORT': '3306',

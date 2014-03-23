@@ -15,12 +15,12 @@ def __my_custome_sql(sql,*arg,**kword):
 #=============================================
 def getAllCorpAvgInfo(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as corp_ph,\
-        avg(c.conductivity) as corp_conductivity,\
-        avg(c.d_oxygen) as corp_DO,\
-        avg(c.rc) as corp_rc,\
-        avg(c.turbidity) as corp_turbidity,\
-        avg(c.temperature) as corp_temp \
+        IFNULL(round(avg(c.ph),2),0) as corp_ph,\
+        IFNULL(round(avg(c.conductivity),2),0) as corp_conductivity,\
+        IFNULL(round(avg(c.d_oxygen),2),0) as corp_DO,\
+        IFNULL(round(avg(c.rc),2),0) as corp_rc,\
+        IFNULL(round(avg(c.turbidity),2),0) as corp_turbidity,\
+        IFNULL(round(avg(c.temperature),2),0) as corp_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -57,12 +57,12 @@ def getLastdayOfMonth():
 
 def getCorpTodayReports(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as day_ph,\
-        avg(c.conductivity) as day_conductivity,\
-        avg(c.d_oxygen) as day_DO,\
-        avg(c.rc) as day_rc,\
-        avg(c.turbidity) as day_turbidity,\
-        avg(c.temperature) as day_temp \
+        IFNULL(round(avg(c.ph),2),0) as day_ph,\
+        IFNULL(round(avg(c.conductivity),2),0) as day_conductivity,\
+        IFNULL(round(avg(c.d_oxygen),2),0) as day_DO,\
+        IFNULL(round(avg(c.rc),2),0) as day_rc,\
+        IFNULL(round(avg(c.turbidity),2),0) as day_turbidity,\
+        IFNULL(round(avg(c.temperature),2),0) as day_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -77,12 +77,12 @@ def getCorpTodayReports(city_id):
 
 def getCorpWeekReports(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as week_ph,\
-        avg(c.conductivity) as week_conductivity,\
-        avg(c.d_oxygen) as week_DO,\
-        avg(c.rc) as week_rc,\
-        avg(c.turbidity) as week_turbidity,\
-        avg(c.temperature) as week_temp \
+        IFNULL(round(avg(c.ph),2),0) as week_ph,\
+        IFNULL(round(avg(c.conductivity),2),0) as week_conductivity,\
+        IFNULL(round(avg(c.d_oxygen),2),0) as week_DO,\
+        IFNULL(round(avg(c.rc),2),0) as week_rc,\
+        IFNULL(round(avg(c.turbidity),2),0) as week_turbidity,\
+        IFNULL(round(avg(c.temperature),2),0) as week_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -98,12 +98,12 @@ def getCorpWeekReports(city_id):
 
 def getCorpMonthReports(city_id):
     sql = 'SELECT a.id as corp_id,a.corp_name as corp_name,\
-        avg(c.ph) as month_ph,\
-        avg(c.conductivity) as month_conductivity,\
-        avg(c.d_oxygen) as month_DO,\
-        avg(c.rc) as month_rc,\
-        avg(c.turbidity) as month_turbidity,\
-        avg(c.temperature) as month_temp \
+        IFNULL(round(avg(c.ph),2),0) as month_ph,\
+        IFNULL(round(avg(c.conductivity),2),0) as month_conductivity,\
+        IFNULL(round(avg(c.d_oxygen),2),0) as month_DO,\
+        IFNULL(round(avg(c.rc),2),0) as month_rc,\
+        IFNULL(round(avg(c.turbidity),2),0) as month_turbidity,\
+        IFNULL(round(avg(c.temperature),2),0) as month_temp \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
         ON a.id = b.corp_id \
@@ -119,12 +119,12 @@ def getCorpMonthReports(city_id):
 #=============================================
 def getSubCorpTodayReports(corp_id):
     sql = 'SELECT d.id as corp_id,d.sub_corp_name as corp_name,\
-        avg(c.ph) as week_ph, \
-        avg(c.conductivity) as week_conductivity, \
-        avg(c.d_oxygen) as week_DO, \
-        avg(c.rc) as week_rc, \
-        avg(c.turbidity) as week_turbidity, \
-        avg(c.temperature) as week_temp  \
+        IFNULL(round(avg(c.ph),2),0) as week_ph, \
+        IFNULL(round(avg(c.conductivity),2),0) as week_conductivity, \
+        IFNULL(round(avg(c.d_oxygen),2),0) as week_DO, \
+        IFNULL(round(avg(c.rc),2),0) as week_rc, \
+        IFNULL(round(avg(c.turbidity),2),0) as week_turbidity, \
+        IFNULL(round(avg(c.temperature),2),0) as week_temp  \
         FROM device_watersubcorp d \
         LEFT JOIN device_watercorp a \
         ON d.corp_id = a.id \
@@ -140,12 +140,12 @@ def getSubCorpTodayReports(corp_id):
 
 def getSubCorpWeekReports(corp_id):
     sql = 'SELECT d.id as corp_id,d.sub_corp_name as corp_name,\
-        avg(c.ph) as week_ph, \
-        avg(c.conductivity) as week_conductivity, \
-        avg(c.d_oxygen) as week_DO, \
-        avg(c.rc) as week_rc, \
-        avg(c.turbidity) as week_turbidity, \
-        avg(c.temperature) as week_temp  \
+        IFNULL(round(avg(c.ph),2),0) as week_ph, \
+        IFNULL(round(avg(c.conductivity),2),0) as week_conductivity, \
+        IFNULL(round(avg(c.d_oxygen),2),0) as week_DO, \
+        IFNULL(round(avg(c.rc),2),0) as week_rc, \
+        IFNULL(round(avg(c.turbidity),2),0) as week_turbidity, \
+        IFNULL(round(avg(c.temperature),2),0) as week_temp  \
         FROM device_watersubcorp d \
         LEFT JOIN device_watercorp a \
         ON d.corp_id = a.id \
@@ -162,12 +162,12 @@ def getSubCorpWeekReports(corp_id):
 
 def getSubCorpMonthReports(corp_id):
     sql = 'SELECT d.id as corp_id,d.sub_corp_name as corp_name,\
-        avg(c.ph) as week_ph, \
-        avg(c.conductivity) as week_conductivity, \
-        avg(c.d_oxygen) as week_DO, \
-        avg(c.rc) as week_rc, \
-        avg(c.turbidity) as week_turbidity, \
-        avg(c.temperature) as week_temp  \
+        IFNULL(round(avg(c.ph),2),0) as week_ph, \
+        IFNULL(round(avg(c.conductivity),2),0) as week_conductivity, \
+        IFNULL(round(avg(c.d_oxygen),2),0) as week_DO, \
+        IFNULL(round(avg(c.rc),2),0) as week_rc, \
+        IFNULL(round(avg(c.turbidity),2),0) as week_turbidity, \
+        IFNULL(round(avg(c.temperature),2),0) as week_temp  \
         FROM device_watersubcorp d \
         LEFT JOIN device_watercorp a \
         ON d.corp_id = a.id \
@@ -187,12 +187,12 @@ def getSubCorpMonthReports(corp_id):
 def getCorpDayTrend(city_id):
     sql = 'SELECT a.id\
         ,a.corp_name\
-        ,avg(c.ph) as corp_ph\
-        ,avg(c.conductivity) as corp_conductivity\
-        ,avg(c.d_oxygen) as corp_DO\
-        ,avg(c.rc) as corp_rc \
-        ,avg(c.turbidity) as corp_turbidity \
-        ,avg(c.temperature) as corp_temp \
+        ,IFNULL(round(avg(c.ph),2),0) as corp_ph\
+        ,IFNULL(round(avg(c.conductivity),2),0) as corp_conductivity\
+        ,IFNULL(round(avg(c.d_oxygen),2),0) as corp_DO\
+        ,IFNULL(round(avg(c.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(c.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(c.temperature),2),0) as corp_temp \
         ,HOUR(c.send_time) as time \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
@@ -209,12 +209,12 @@ def getCorpDayTrend(city_id):
 def getCorpWeekTrend(city_id):
     sql = 'SELECT a.id\
         ,a.corp_name\
-        ,avg(c.ph) as corp_ph\
-        ,avg(c.conductivity) as corp_conductivity\
-        ,avg(c.d_oxygen) as corp_DO\
-        ,avg(c.rc) as corp_rc \
-        ,avg(c.turbidity) as corp_turbidity \
-        ,avg(c.temperature) as corp_temp \
+        ,IFNULL(round(avg(c.ph),2),0) as corp_ph\
+        ,IFNULL(round(avg(c.conductivity),2),0) as corp_conductivity\
+        ,IFNULL(round(avg(c.d_oxygen),2),0) as corp_DO\
+        ,IFNULL(round(avg(c.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(c.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(c.temperature),2),0) as corp_temp \
         ,WEEKDAY(c.send_time)+1 as time \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
@@ -232,12 +232,12 @@ def getCorpWeekTrend(city_id):
 def getCorpMonthTrend(city_id):
     sql = 'SELECT a.id\
         ,a.corp_name\
-        ,avg(c.ph) as corp_ph\
-        ,avg(c.conductivity) as corp_conductivity\
-        ,avg(c.d_oxygen) as corp_DO\
-        ,avg(c.rc) as corp_rc \
-        ,avg(c.turbidity) as corp_turbidity \
-        ,avg(c.temperature) as corp_temp \
+        ,IFNULL(round(avg(c.ph),2),0) as corp_ph\
+        ,IFNULL(round(avg(c.conductivity),2),0) as corp_conductivity\
+        ,IFNULL(round(avg(c.d_oxygen),2),0) as corp_DO\
+        ,IFNULL(round(avg(c.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(c.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(c.temperature),2),0) as corp_temp \
         ,day(c.send_time) as time \
         FROM device_watercorp a \
         LEFT JOIN device_device b \
@@ -256,12 +256,12 @@ def getCorpMonthTrend(city_id):
 def getSubCorpDayTrend(corp_id):
     sql='SELECT a.id \
         ,a.sub_corp_name \
-        ,avg(d.ph) as corp_ph \
-        ,avg(d.conductivity) as corp_conductivity \
-        ,avg(d.d_oxygen) as corp_DO \
-        ,avg(d.rc) as corp_rc \
-        ,avg(d.turbidity) as corp_turbidity \
-        ,avg(d.temperature) as corp_temp \
+        ,IFNULL(round(avg(d.ph),2),0) as corp_ph \
+        ,IFNULL(round(avg(d.conductivity),2),0) as corp_conductivity \
+        ,IFNULL(round(avg(d.d_oxygen),2),0) as corp_DO \
+        ,IFNULL(round(avg(d.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(d.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(d.temperature),2),0) as corp_temp \
         ,hour(d.send_time) as time \
         FROM device_watersubcorp a \
         LEFT JOIN device_watercorp b \
@@ -281,12 +281,12 @@ def getSubCorpDayTrend(corp_id):
 def getSubCorpWeekTrend(corp_id):
     sql='SELECT a.id \
         ,a.sub_corp_name \
-        ,avg(d.ph) as corp_ph \
-        ,avg(d.conductivity) as corp_conductivity \
-        ,avg(d.d_oxygen) as corp_DO \
-        ,avg(d.rc) as corp_rc \
-        ,avg(d.turbidity) as corp_turbidity \
-        ,avg(d.temperature) as corp_temp \
+        ,IFNULL(round(avg(d.ph),2),0) as corp_ph \
+        ,IFNULL(round(avg(d.conductivity),2),0) as corp_conductivity \
+        ,IFNULL(round(avg(d.d_oxygen),2),0) as corp_DO \
+        ,IFNULL(round(avg(d.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(d.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(d.temperature),2),0) as corp_temp \
         ,hour(d.send_time) as time \
         FROM device_watersubcorp a \
         LEFT JOIN device_watercorp b \
@@ -307,12 +307,12 @@ def getSubCorpWeekTrend(corp_id):
 def getSubCorpMonthTrend(corp_id):
     sql='SELECT a.id \
         ,a.sub_corp_name \
-        ,avg(d.ph) as corp_ph \
-        ,avg(d.conductivity) as corp_conductivity \
-        ,avg(d.d_oxygen) as corp_DO \
-        ,avg(d.rc) as corp_rc \
-        ,avg(d.turbidity) as corp_turbidity \
-        ,avg(d.temperature) as corp_temp \
+        ,IFNULL(round(avg(d.ph),2),0) as corp_ph \
+        ,IFNULL(round(avg(d.conductivity),2),0) as corp_conductivity \
+        ,IFNULL(round(avg(d.d_oxygen),2),0) as corp_DO \
+        ,IFNULL(round(avg(d.rc),2),0) as corp_rc \
+        ,IFNULL(round(avg(d.turbidity),2),0) as corp_turbidity \
+        ,IFNULL(round(avg(d.temperature),2),0) as corp_temp \
         ,hour(d.send_time) as time \
         FROM device_watersubcorp a \
         LEFT JOIN device_watercorp b \
@@ -380,9 +380,60 @@ def getSpotDetailInfo(spot_id):
     return __my_custome_sql(sql,spot_id)
 
 #=============================================
+def getCorpSpotInfo(corp_id):
+    sql = 'SELECT a.id as spot_id \
+            ,a.x_pos as x_pos \
+            ,a.y_pos as y_pos \
+            ,a.status_id as spot_status \
+            FROM device_device a \
+            LEFT JOIN device_watercorp b \
+            ON a.corp_id = b.id \
+            WHERE a.corp_id = %s'
+    return __my_custome_sql(sql,corp_id)
+
+#====================getAreaAvgInfo=========================
+def getAreaAvgInfo(city_id):
+    sql = 'SELECT a.id as area_id \
+                    ,a.area_name as areaName \
+                    ,c.ph as area_ph   \
+                    ,c.conductivity as area_conductivity   \
+                    ,c.d_oxygen as area_DO   \
+                    ,c.rc as area_rc   \
+                    ,c.turbidity as area_turbidity   \
+                    ,c.temperature as area_temp   \
+            FROM device_area a \
+            LEFT JOIN device_device b \
+            ON a.id = b.area_id \
+            LEFT JOIN (SELECT * FROM  \
+            hardsocket_water_param hwp  \
+            WHERE TO_DAYS(NOW()) = TO_DAYS(hwp.send_time) \
+            ORDER BY hwp.send_time DESC \
+            ) c \
+            ON b.id = c.device_id \
+            WHERE a.parent_id = %s \
+            GROUP BY a.id '
+    return __my_custome_sql(sql,city_id)
+
+def getAreaSpotInfo(city_id):
+    sql = 'SELECT a.id as spot_id \
+            ,a.x_pos as x_pos \
+            ,a.y_pos as y_pos \
+            ,a.status_id as spot_status \
+            FROM device_device a \
+            LEFT JOIN device_area b \
+            ON a.area_id = b.id \
+            AND b.parent_id = %s'
+    return __my_custome_sql(sql,city_id)
 
 
-#=============================================
-
-
-
+#====================getSubAreaAvgInfo=========================
+def getSubAreaSpotInfo(area_id):
+    sql = 'SELECT a.id as spot_id \
+            ,a.x_pos as x_pos \
+            ,a.y_pos as y_pos \
+            ,a.status_id as spot_status \
+            FROM device_device a \
+            LEFT JOIN device_area b \
+            ON a.area_id = b.id \
+            WHERE b.id = %s'
+    return __my_custome_sql(sql,area_id)
