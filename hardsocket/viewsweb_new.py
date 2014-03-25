@@ -28,15 +28,16 @@ def getSubCorpReports(request):
     return HttpResponse(results)
 
 def getCorpTrend(request):
-    city_id = request.GET['corp_id']
+    city_id = request.GET['city_id']
     reports_type = request.GET['reports_type']
     obj = None
     if reports_type == '1':
-        obj = raw_sql.getSubCorpDayTrend(city_id)
+        obj = raw_sql.getCorpDayTrend(city_id)
     elif reprots_type == '2':
-        obj = raw_sql.getSubCorpWeekTrend(city_id)
+        obj = raw_sql.getCorpWeekTrend(city_id)
     elif reprots_type == '3':
-        obj = raw_sql.getSubCorpMonthTrend(city_id)
+        obj = raw_sql.getCorpMonthTrend(city_id)
+    
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 
@@ -45,11 +46,12 @@ def getSubCorpTrend(request):
     reports_type = request.GET['reports_type']
     obj = None
     if reports_type == '1':
-        obj = {raw_sql.getCorpDayTrend(corp_id)}
+        obj = {raw_sql.getSubCorpDayTrend(corp_id)}
     elif reprots_type == '2':
-        obj = {raw_sql.getCorpWeekTrend(corp_id)}
+        obj = {raw_sql.getSubCorpWeekTrend(corp_id)}
     elif reprots_type == '3':
-        obj = {raw_sql.getCorpMonthTrend(corp_id)}
+        obj = {raw_sql.getSubCorpMonthTrend(corp_id)}
+
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)
 

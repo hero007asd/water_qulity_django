@@ -276,8 +276,8 @@ def getSubCorpDayTrend(corp_id):
         WHERE a.corp_id = %s \
         GROUP BY a.id,time \
         ORDER BY a.id'
-    return __my_custome_sql(sql,getFirstdayOfWeek(),getLastdayOfWeek(),corp_id)
-
+    return __my_custome_sql(sql,corp_id)
+   
 def getSubCorpWeekTrend(corp_id):
     sql='SELECT a.id \
         ,a.sub_corp_name \
@@ -301,8 +301,8 @@ def getSubCorpWeekTrend(corp_id):
         ON e.id = c.area_id \
         WHERE a.corp_id = %s \
         GROUP BY a.id,time \
-        ORDER BY a.id'
-    return __my_custome_sql(sql,corp_id)
+        ORDER BY a.id' 
+    return __my_custome_sql(sql,getFirstdayOfWeek(),getLastdayOfWeek(),corp_id)
 
 def getSubCorpMonthTrend(corp_id):
     sql='SELECT a.id \
