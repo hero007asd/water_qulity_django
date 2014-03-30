@@ -46,11 +46,11 @@ def getSubCorpTrend(request):
     reports_type = request.GET['reports_type']
     obj = None
     if reports_type == '1':
-        obj = {raw_sql.getSubCorpDayTrend(corp_id)}
+        obj = raw_sql.getSubCorpDayTrend(corp_id)
     elif reprots_type == '2':
-        obj = {raw_sql.getSubCorpWeekTrend(corp_id)}
+        obj = raw_sql.getSubCorpWeekTrend(corp_id)
     elif reprots_type == '3':
-        obj = {raw_sql.getSubCorpMonthTrend(corp_id)}
+        obj = raw_sql.getSubCorpMonthTrend(corp_id)
 
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
     return HttpResponse(results)

@@ -2,21 +2,27 @@
 var st;
 //趋势图放大或缩小状态
 var star;
-//趋势图状态(是总公司还是公公司的趋势图)
+//趋势图状态(是总公司还是分公司的趋势图)
 var tu;
 
 
 
 //趋势图值
-var res1;
-var res2;
-var res3;
-var res4;
-var res5;
-var res6;
+var res1= new Array();
+var res2= new Array();
+var res3= new Array();
+var res4= new Array();
+var res5= new Array();
+var res6= new Array();
+var  color =new Array('#AF0202','#99CDFB','#3366FB','#0000FA','#F8CC00',
+			'#F89900','#F76600', '#EC7A00', '#FCD200', '#81C714',
+			'#FA5E1F', '#FDCB3F', '#71D743', '#D23333', '#BAE73F',
+			'#AB7B55', '#B381C9','#A5DBFC', '#CDE8FA', '#D9F0FA', 
+			'#0099F9', '#1BA4F9', '#41B2FA', '#63C1FA', '#83CDFA',
+			'#0673B8', '#0091F1', '#F85900', '#1CC2E6', '#C32121');
 
 jQuery(document).ready(function(){
-	
+
 	var url=window.location.href;
 	if(url.indexOf("id")>=0)
 	{
@@ -26,35 +32,19 @@ jQuery(document).ready(function(){
 		var arrm=wen[1];
 		var de=arrm.split("=");
 		var ids=de[1];
-		
-	//	$(".r_top").empty();
-	//	$(".r_con").empty();
-		
-//		$(".r_top").append("<input type='button' class='backs' value='返回'/>");
-//		$(".r_con").append("<div class='r_con1'></div><div class='r_con2'></div>");
-//		$(".r_con1").append("<table border='1' cellpadding='0' cellspacing='0' id='r_re'></table>");
-//		$("#r_re").append("<tr style='background-color:#f5faad'><th colspan='25'>上海市北自来水公司长兴水厂监测点</th></tr>"
-//						+"<tr><td></td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//						+"<tr><td>PH</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"	
-//						+"<tr><td>电导率</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//						+"<tr><td>溶解氧</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//						+"<tr><td>余氯</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//						+"<tr><td>浊度</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//						+"<tr><td>温度</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>"
-//					);
-//		$(".r_con2").append("<input type='button' value='PH值本日趋势' id='r1'/><input type='button' value='电导率值本日趋势' id='r1'/><input type='button' value='溶解氧值本日趋势' id='r1'/><input type='button' value='余氯值本日趋势' id='r1'/><input type='button' value='浊度值本日趋势' id='r1'/><input type='button' value='温度值本日趋势' id='r1'/>");
+
 		
 		$.ajax({
-		url:"http://www.wetouching.com:8000/hardsocket/getSpotDetailInfo?spot_id="+ids+"",
+		url:"http://localhost:8000/hardsocket/getSpotDetailInfo?spot_id="+ids+"",
 		type:"GET",
-		dataType:"jsonp",
-		jsonp:"jsonpcallback",
+		dataType:"json",
+		
 		success:function(data){
 			var json=eval(data);
 			$(".r_top").append("<input type='button' class='backs' value='返回'/>");
 			$(".r_con").append("<div class='r_con1'></div><div class='r_con2'></div>");
 			$(".r_con1").append("<table border='1' cellpadding='0' cellspacing='0' id='r_re'></table>");
-			var con="<tr style='background-color:#f5faad'><th colspan='25'>"+json['corp_name']+json['area_name']+json['spot_name']+"</th></tr><tr><td></td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>";
+			var con="<tr><th colspan='25'>"+json['corp_name']+json['area_name']+json['spot_name']+"</th></tr><tr><td>参数</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>";
 			
 			var con1;
 			var con2;
@@ -64,31 +54,31 @@ jQuery(document).ready(function(){
 			var con6;
 			
 			
-			for ( var y = 0; y < y.length; y++) {
+			for ( var y = 0; y < json['spt_detail'].length; y++) {
 				
-				con1+="<td style='"+(json['spot_detail'][y]['ph_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_ph']+"</td>";
-				con2+="<td style='"+(json['spot_detail'][y]['conductivity_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_conductivity']+"</td>";
-				con3+="<td style='"+(json['spot_detail'][y]['do_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_DO']+"</td>";
-				con4+="<td style='"+(json['spot_detail'][y]['rc_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_rc']+"</td>";
-				con5+="<td style='"+(json['spot_detail'][y]['turbidity_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_turbidity']+"</td>";
-				con6+="<td style='"+(json['spot_detail'][y]['temp_status']==1?'color:red':'color:black')+"'>"+json['spot_detail'][y]['spot_temp']+"</td>";
+				con1+="<td style='"+(json['spt_detail'][y]['ph_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_ph']+"</td>";
+				con2+="<td style='"+(json['spt_detail'][y]['conductivity_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_conductivity']+"</td>";
+				con3+="<td style='"+(json['spt_detail'][y]['do_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_DO']+"</td>";
+				con4+="<td style='"+(json['spt_detail'][y]['rc_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_rc']+"</td>";
+				con5+="<td style='"+(json['spt_detail'][y]['turbidity_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_turbidity']+"</td>";
+				con6+="<td style='"+(json['spt_detail'][y]['temp_status']==1?'color:red':'color:white')+"' class='line001'>"+json['spt_detail'][y]['spot_temp']+"</td>";
 				
 			}
 			
-			con+="<tr><td>PH</td>"+con1+"</tr>";
-			con+="<tr><td>电导率</td>"+con2+"</tr>";
-			con+="<tr><td>溶解氧</td>"+con3+"</tr>";
-			con+="<tr><td>余氯</td>"+con4+"</tr>";
-			con+="<tr><td>浊度</td>"+con5+"</tr>";
-			con+="<tr><td>温度</td>"+con6+"</tr>";
+			con+="<tr><td width='100'>PH</td>"+con1+"</tr>";
+			con+="<tr><td width='100'>电导率</td>"+con2+"</tr>";
+			con+="<tr><td width='100'>溶解氧</td>"+con3+"</tr>";
+			con+="<tr><td width='100'>余氯</td>"+con4+"</tr>";
+			con+="<tr><td width='100'>浊度</td>"+con5+"</tr>";
+			con+="<tr><td width='100'>温度</td>"+con6+"</tr>";
 			$("#r_re").append(con);
 			
 			$(".r_con2").append("<input type='button' value='PH值本日趋势' id='r1'/><input type='button' value='电导率值本日趋势' id='r1'/><input type='button' value='溶解氧值本日趋势' id='r1'/><input type='button' value='余氯值本日趋势' id='r1'/><input type='button' value='浊度值本日趋势' id='r1'/><input type='button' value='温度值本日趋势' id='r1'/>");
 			
 			
 			/*设置表格样式(偶数奇数切换颜色)*/
-			$("#r_re").find("tr").css("background-color", "#f5f7ea");
-			$("#r_re").find("tr:odd").css("background-color", "#eee0a7");
+			$("#r_re").find("tr").css("background-image", "url(../../site_media/img/007.png)");
+			$("#r_re").find("tr:odd").css("background-image", "url(../../site_media/img/008.png)");
 		}
 	});
 	}
@@ -108,16 +98,11 @@ jQuery(document).ready(function(){
 
 	
 	
-	
-	
-
-	
-	
 	/*返回按钮*/
 $(".backs").live('click',function(){
 	if(st==1||st==3||st==5){
 		//1是总公司，返回总页,3是趋势图，返回 总页，5是某个检测点信息，返回 总页
-		location.href="aa.html";
+		location.href="../aa";
 	}else if(st==2){
 		//是子公司 返回总公司
 		allrep();
@@ -181,52 +166,7 @@ function selectid(id){
 }
 
 
-/*查看趋势图(日，周，月)*/
-//function content(type){
-//	star=0;
-//	st=3;
-//	
-//	$(".r_con").empty();
-//	$(".r_top").empty();
-//	
-//	$(".r_top").append("<input type='button' name='back' class='backs' value='返回' onclick=''/><input type='button' name='day' id='day' value='本日 ' onclick='content(1)'/>"
-//			+"<input type='button' name='week' id='week' value='本周' onclick='content(2)'/><input type='button' name='month' id='month' value='本月' onclick='content(3)'/><input type='button' name='reportBiao' id='reportBiao' value='报表' onclick='allrep()'/>");
-//	
-//	$(".r_con").append("<div class='r_divcon' id='divmap1' style='width:550px;height: 400px;margin-left:20px;float: left;'></div>"
-//	+"<div class='r_divcon' id='divmap2' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-//	+"<div class='r_divcon' id='divmap3' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-//	+"<div class='r_divcon' id='divmap4' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-//	+"<div class='r_divcon' id='divmap5' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-//	+"<div class='r_divcon' id='divmap6' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>");
-//	
-//	//PH值
-//	divmap1();
-//	//电导率
-//	divmap2();
-//	//溶解氧
-//	divmap3();
-//	//余氯
-//	divmap4();
-//	//浊度
-//	divmap5();
-//	//温度
-//	divmap6();
 
-	
-//type=1，2，3代表日，周，月
-//	$.ajax({
-//		url:"http://www.wetouching.com:8000/hardsocket/getCityReports/?city_id=310000&reports_type="+type+"",
-//		type:"GET",
-//		dataType:"jsonp",
-//		jsonp:"jsonpcallback",
-//		success:function(data){
-//			var json=eval(data);
-//			
-//		}
-//	});
-
-
-//};
 
 /*页面初始化(显示所有某个城市所有公司的信息)*/
 function allrep(){
@@ -244,40 +184,27 @@ function allrep(){
 	
 	
 	$.ajax({
-		url:"http://www.wetouching.com:8000/hardsocket/getAllCorpReports?city_id=310000",
+		url:"http://localhost:8000/hardsocket/getAllCorpReports/?city_id=310000",
 		type:"GET",
-		dataType:"jsonp",
-		jsonp:"jsonpcallback",
+		dataType:"json",
+		
 		success:function(data){
 			var json=eval(data);
-			var con="<tr style='background-color:#f5faad'><th></th><th colspan='6' class='ri'>当日总体水质</th><th colspan='6'  class='ri'>本周总体水质</th><th colspan='6'  class='ri'>本月总体水质</th></tr><tr><td></td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td></tr>";
+			var con="<tr><th></th><th colspan='6' class='ri'>当日总体水质</th><th colspan='6'  class='ri'>本周总体水质</th><th colspan='6'  class='ri'>本月总体水质</th></tr><tr><td></td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td></tr>";
 			
-			for ( var y = 0; y < y.length; y++) {
+			for ( var y = 0; y < json['todayInfo'].length; y++) {
 				
-				con+="<tr><td onclick='getreps("+json['todayInfo'][y]['corp_id']+")'>"+json['todayInfo'][y]['corp_name']+"</td><td  class='ri'>"+json['todayInfo'][y]['day_ph']+"</td><td>"+json['todayInfo'][y]['day_conductivity']+"</td><td>"+json['todayInfo'][y]['day_DO']+"</td><td>"+json['todayInfo'][y]['day_rc']+"</td><td>"+json['todayInfo'][y]['day_turbidity']+"</td><td>"+json['todayInfo'][y]['day_temp']+"</td><td  class='ri'>"+json['weekInfo'][y]['week_ph']+"</td><td>"+json['weekInfo'][y]['week_conductivity']+"</td><td>"+json['weekInfo'][y]['week_DO']+"</td><td>"+json['weekInfo'][y]['week_rc']+"</td><td>"+json['weekInfo'][y]['week_turbidity']+"</td><td>"+json['weekInfo'][y]['week_temp']+"</td><td  class='ri'>"+json['monthInfo'][y]['month_ph']+"</td><td>"+json['monthInfo'][y]['month_conductivity']+"</td><td>"+json['monthInfo'][y]['month_DO']+"</td><td>"+json['monthInfo'][y]['month_rc']+"</td><td>"+json['monthInfo'][y]['month_turbidity']+"</td><td>"+json['monthInfo'][y]['corp_temp']+"</td></tr>";
+				con+="<tr><td onclick='getreps("+json['todayInfo'][y]['corp_id']+")'>"+json['todayInfo'][y]['corp_name']+"</td><td  class='ri'>"+json['todayInfo'][y]['day_ph']+"</td><td>"+json['todayInfo'][y]['day_conductivity']+"</td><td>"+json['todayInfo'][y]['day_DO']+"</td><td>"+json['todayInfo'][y]['day_rc']+"</td><td>"+json['todayInfo'][y]['day_turbidity']+"</td><td>"+json['todayInfo'][y]['day_temp']+"</td><td  class='ri'>"+json['weekInfo'][y]['week_ph']+"</td><td>"+json['weekInfo'][y]['week_conductivity']+"</td><td>"+json['weekInfo'][y]['week_DO']+"</td><td>"+json['weekInfo'][y]['week_rc']+"</td><td>"+json['weekInfo'][y]['week_turbidity']+"</td><td>"+json['weekInfo'][y]['week_temp']+"</td><td  class='ri'>"+json['MonthInfo'][y]['month_ph']+"</td><td>"+json['MonthInfo'][y]['month_conductivity']+"</td><td>"+json['MonthInfo'][y]['month_DO']+"</td><td>"+json['MonthInfo'][y]['month_rc']+"</td><td>"+json['MonthInfo'][y]['month_turbidity']+"</td><td>"+json['MonthInfo'][y]['month_temp']+"</td></tr>";
 			}
+
 			$("#r_re").append(con);
 			
 			/*设置表格样式(偶数奇数切换颜色)*/
-			$("#r_re").find("tr").css("background-color", "#f5f7ea");
-			$("#r_re").find("tr:odd").css("background-color", "#eee0a7");
+			$("#r_re").find("tr").css("background-image", "url(../../site_media/img/007.png)");
+			$("#r_re").find("tr:odd").css("background-image", "url(../../site_media/img/008.png)");
 		}
 	});
-	
-	
-	
-	
-	
-//	$("#r_re").append("<tr style='background-color:#f5faad'><th></th><th colspan='6' class='ri'>当日总体水质</th><th colspan='6'  class='ri'>本周总体水质</th><th colspan='6'  class='ri'>本月总体水质</th></tr>"
-//			+"<tr><td></td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td></tr>"
-//			+"<tr><td>全市</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市南</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市北</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市南</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市北</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市南</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td onclick='getreps()'>市北</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//		);
+
 };
 
 
@@ -293,76 +220,76 @@ function getreps(id){
 	//ajax请求
 	
 	$.ajax({
-		url:"http://www.wetouching.com:8000/hardsocket/getSubCorpReports/?corp_id="+id,
+		url:"http://localhost:8000/hardsocket/getSubCorpReports/?corp_id="+id,
 		type:"GET",
-		dataType:"jsonp",
-		jsonp:"jsonpcallback",
+		dataType:"json",
+		
 		success:function(data){
 			var json=eval(data);
 			var con="<tr style='background-color:#f5faad'><th></th><th colspan='6' class='ri'>当日总体水质</th><th colspan='6'  class='ri'>本周总体水质</th><th colspan='6'  class='ri'>本月总体水质</th></tr><tr><td></td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td></tr>";
 			
-			for ( var y = 0; y < y.length; y++) {
+			for ( var y = 0; y < json['todayInfo'].length; y++) {
 				
-				con+="<tr><td id='"+json['todayInfo'][y]['corp_id']+"'>"+json['todayInfo'][y]['corp_name']+"</td><td  class='ri'>"+json['todayInfo'][y]['day_ph']+"</td><td>"+json['todayInfo'][y]['day_conductivity']+"</td><td>"+json['todayInfo'][y]['day_DO']+"</td><td>"+json['todayInfo'][y]['day_rc']+"</td><td>"+json['todayInfo'][y]['day_turbidity']+"</td><td>"+json['todayInfo'][y]['day_temp']+"</td><td  class='ri'>"+json['weekInfo'][y]['week_ph']+"</td><td>"+json['weekInfo'][y]['week_conductivity']+"</td><td>"+json['weekInfo'][y]['week_DO']+"</td><td>"+json['weekInfo'][y]['week_rc']+"</td><td>"+json['weekInfo'][y]['week_turbidity']+"</td><td>"+json['weekInfo'][y]['week_temp']+"</td><td  class='ri'>"+json['monthInfo'][y]['month_ph']+"</td><td>"+json['monthInfo'][y]['month_conductivity']+"</td><td>"+json['monthInfo'][y]['month_DO']+"</td><td>"+json['monthInfo'][y]['month_rc']+"</td><td>"+json['monthInfo'][y]['month_turbidity']+"</td><td>"+json['monthInfo'][y]['corp_temp']+"</td></tr>";
+				con+="<tr><td id='"+json['todayInfo'][y]['corp_id']+"'>"+json['todayInfo'][y]['corp_name']+"</td><td  class='ri'>"+json['todayInfo'][y]['day_ph']+"</td><td>"+json['todayInfo'][y]['day_conductivity']+"</td><td>"+json['todayInfo'][y]['day_DO']+"</td><td>"+json['todayInfo'][y]['day_rc']+"</td><td>"+json['todayInfo'][y]['day_turbidity']+"</td><td>"+json['todayInfo'][y]['day_temp']+"</td><td  class='ri'>"+json['weekInfo'][y]['week_ph']+"</td><td>"+json['weekInfo'][y]['week_conductivity']+"</td><td>"+json['weekInfo'][y]['week_DO']+"</td><td>"+json['weekInfo'][y]['week_rc']+"</td><td>"+json['weekInfo'][y]['week_turbidity']+"</td><td>"+json['weekInfo'][y]['week_temp']+"</td><td  class='ri'>"+json['MonthInfo'][y]['month_ph']+"</td><td>"+json['MonthInfo'][y]['month_conductivity']+"</td><td>"+json['MonthInfo'][y]['month_DO']+"</td><td>"+json['MonthInfo'][y]['month_rc']+"</td><td>"+json['MonthInfo'][y]['month_turbidity']+"</td><td>"+json['MonthInfo'][y]['corp_temp']+"</td></tr>";
 			}
 			$("#r_re").append(con);
 			
 			/*设置表格样式(偶数奇数切换颜色)*/
-			$("#r_re").find("tr").css("background-color", "#f5f7ea");
-			$("#r_re").find("tr:odd").css("background-color", "#eee0a7");
+			$("#r_re").find("tr").css("background-image", "url(../../site_media/img/007.png)");
+			$("#r_re").find("tr:odd").css("background-image", "url(../../site_media/img/008.png)");
 		}
 	});
 	
-	
-	
-	
-	
-	
-//	$("#r_re").append("<tr style='background-color:#f5faad'><th></th><th colspan='6' class='ri'>当日总体水质</th><th colspan='6'  class='ri'>本周总体水质</th><th colspan='6'  class='ri'>本月总体水质</th></tr>"
-//			+"<tr><td></td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td><td  class='ri'>PH</td><td>电导</td><td>溶氧</td><td>余氯</td><td>浊度</td><td>温度</td></tr>"
-//			+"<tr><td >全市</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市南子公司</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市北二厂</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市南二厂</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市北子公司</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市南子公司</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//			+"<tr><td>市北子公司</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td><td  class='ri'>20</td><td>12</td><td>11</td><td>100</td><td>6.9</td><td>25</td></tr>"
-//		);
+
 };
 
 
 
 function corpTu(type){
 	
-	res1="";
+	//res1="";
 	res2="";
 	res3="";
 	res4="";
 	res5="";
 	res6="";
-	
+
 	//获取总公司日，周，月
 	$.ajax({
-		url:"http://www.wetouching.com:8000/hardsocket/getAllCorpReports?city_id=310000&reports_type="+type,
+		url:"http://localhost:8000/hardsocket/getCorpTrend/?city_id=310000&reports_type="+type,
 		type:"GET",
-		dataType:"jsonp",
-		jsonp:"jsonpcallback",
+		dataType:"json",
+	
 		success:function(data){
-		var	result=eval(data);
+		//var	result=eval(data);
+		//alert("data[0]['time']:"+data[0]['time']);
 			
-			for ( var x = 0; x < x.length; x++) {
+		
+		
+
+			for(var i= 0; i < data.length; i++) {
 				
 //				var thre=result[x][2];
-				var threle=result[x][2].length;
-				for ( var y = 0; y < threle.length; y++) {
-					res1+=threle[y][0];
-					res2+=threle[y][1];
-					res3+=threle[y][2];
-					res4+=threle[y][3];
-					res5+=threle[y][4];
-					res6+=threle[y][5];
-				}
+					//res1[0]=
+					
+						res1[i]= new Array();
+						res1[i][0]= data[i]['time']==null?0:data[i]['time'];
+			 			res1[i][1]= parseInt(data[i]['corp_ph']);
+					
+ 					
+		 			//res1[1]=color[i];
+					
+
+				
+					//res1+=result[x][0];
+					//res2+=result[x][1];
+					//res3+=result[x][2];
+					//res4+=result[x][3];
+					//res5+=result[x][4];
+					//res6+=result[x][5];
+				
 			}
+			
 		}
 	});
 	
@@ -376,14 +303,16 @@ function corpTu(type){
 	$(".r_top").append("<input type='button' name='back' class='backs' value='返回' onclick=''/><input type='button' name='day' id='day' value='本日 ' onclick='chirdCorpTu(1)'/>"
 			+"<input type='button' name='week' id='week' value='本周' onclick='chirdCorpTu(2)'/><input type='button' name='month' id='month' value='本月' onclick='chirdCorpTu(3)'/><input type='button' name='reportBiao' id='reportBiao' value='报表' onclick='allrep()'/>");
 	
-	$(".r_con").append("<div class='r_divcon' id='divmap1' style='width:550px;height: 400px;margin-left:20px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap2' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap3' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap4' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap5' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap6' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>");
+	$(".r_con").append("<div class='r_divcon' id='divmap1' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap2' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap3' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap4' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap5' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap6' style='width:30%;height: 320px;margin-left:20px;float: left;'></div>");
+	
 	
 	//PH值
+	alert(res1);
 	divmap1(res1);
 	//电导率
 	divmap2(res2);
@@ -407,16 +336,15 @@ function chirdCorpTu(cordId,type){
 	res5="";
 	res6="";
 	
-	
 	$.ajax({
-		url:"http://www.wetouching.com:8000/hardsocket/getSubCorpReports/?corp_id="+id+"&reports_type="+type,
+		url:"http://localhost:8000/hardsocket/getSubCorpTrend/?corp_id="+id+"&reports_type="+type,
 		type:"GET",
-		dataType:"jsonp",
-		jsonp:"jsonpcallback",
+		dataType:"json",
+		
 		success:function(data){
 			result=eval(data);
 			
-
+			
 			for ( var x = 0; x < result.length; x++) {
 				
 //				var thre=result[x][2];
@@ -445,12 +373,12 @@ function chirdCorpTu(cordId,type){
 	$(".r_top").append("<input type='button' name='back' class='backs' value='返回' onclick=''/><input type='button' name='day' id='day' value='本日 ' onclick='chirdCorpTu("+cordId+",1)'/>"
 			+"<input type='button' name='week' id='week' value='本周' onclick='chirdCorpTu("+cordId+",2)'/><input type='button' name='month' id='month' value='本月' onclick='chirdCorpTu("+cordId+",3)'/><input type='button' name='reportBiao' id='reportBiao' value='报表' onclick='allrep()'/>");
 	
-	$(".r_con").append("<div class='r_divcon' id='divmap1' style='width:550px;height: 400px;margin-left:20px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap2' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap3' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap4' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap5' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>"
-	+"<div class='r_divcon' id='divmap6' style='width:550px;height: 400px;margin-left:10px;float: left;'></div>");
+	$(".r_con").append("<div class='r_divcon' id='divmap1' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap2' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap3' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap4' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap5' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>"
+	+"<div class='r_divcon' id='divmap6' style='width:400px;height: 400px;margin-left:20px;float: left;'></div>");
 	
 	//PH值
 	divmap1(res1);
@@ -472,22 +400,16 @@ function chirdCorpTu(cordId,type){
 function divmap1(data){
 	
 	//PH值
-		
 	/*创建趋势图*/
 	var myChart = new JSChart('divmap1', 'line');
 	myChart.setTitle('PH值');
 	
-	for ( var z = 0; z < data.length; z++) {
-		
-		
-		
-	}
-	
-	
+	//alert("data:"+data);
 //	myChart.setDataArray([[1, 2],[2, 5],[3, 10],[4, 1],[5, 6],[6, 9],[7, 7],[8, 3],[9, 13],[10, 12],[11, 12],[12, 12],[13, 12]], 'blue');
-	myChart.setDataArray([[6, 9],[7,10]], 'blue');
-	myChart.setDataArray([[1, 2],[2, 5],[3, 7],[4, 10],[5, 11],[6, 2],[7, 3],[8, 13],[9, 10],[10, 9],[11, 12],[12, 12],[13, 12]], 'green');
-	myChart.setDataArray([[1, 1],[2, 2],[3, 10],[4, 8],[5, 2],[6, 6],[7, 0],[8, 5],[9, 9],[10, 2],[11, 12],[12, 12],[13, 12]], 'gray');
+	//myChart.setDataArray([[6, 9],[7,10]], 'blue');
+	//myChart.setDataArray([[1, 2],[2, 5],[3, 7],[4, 10],[5, 11],[6, 2],[7, 3],[8, 13],[9, //10],[10, 9],[11, 12],[12, 12],[13, 12]], 'green');
+	//myChart.setDataArray([[1, 1],[2, 2],[3, 10],[4, 8],[5, 2],[6, 6],[7, 0],[8, 5],[9, //9],[10, 2],[11, 12],[12, 12],[13, 12]], 'gray');
+	myChart.setDataArray(data);
 	myChart.setAxisPaddingBottom(40);
 	myChart.setTextPaddingBottom(10);
 	myChart.setAxisValuesNumberY(14);
@@ -554,7 +476,7 @@ function divmap1(data){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
+		myChart.setSize(400, 300);
 //		myChart.setLegendShow(true);
 //		myChart.setLegendPosition(400, 80);
 //		myChart.setAxisPaddingRight(110);
@@ -654,21 +576,11 @@ function divmap2(data){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(400, 80);
-		myChart.setAxisPaddingRight(110);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		myChart.setSize(400, 300);
+		
 	}else if(star==1){
 		myChart.setSize(1300, 700);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(1200, 300);
-		myChart.setAxisPaddingRight(150);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		
 	}
 	
 	
@@ -754,21 +666,11 @@ function divmap3(data){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(400, 80);
-		myChart.setAxisPaddingRight(110);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		myChart.setSize(400, 300);
+		
 	}else if(star==1){
 		myChart.setSize(1300, 700);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(1200, 300);
-		myChart.setAxisPaddingRight(150);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		
 	}
 	
 	
@@ -853,21 +755,11 @@ function divmap4(data){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(400, 80);
-		myChart.setAxisPaddingRight(110);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		myChart.setSize(400, 300);
+		
 	}else if(star==1){
 		myChart.setSize(1300, 700);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(1200, 300);
-		myChart.setAxisPaddingRight(150);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		
 	}
 	
 	
@@ -950,21 +842,11 @@ function divmap5(data){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(400, 80);
-		myChart.setAxisPaddingRight(110);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		myChart.setSize(400, 300);
+		
 	}else if(star==1){
 		myChart.setSize(1300, 700);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(1200, 300);
-		myChart.setAxisPaddingRight(150);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		
 	}
 	
 	
@@ -1047,21 +929,11 @@ function divmap6(){
 	myChart.setFlagRadius(4);
 	myChart.setBackgroundImage('../../site_media/img/chart_bg.jpg');
 	if(star==0){
-		myChart.setSize(500, 300);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(400, 80);
-		myChart.setAxisPaddingRight(110);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		myChart.setSize(400, 300);
+		
 	}else if(star==1){
 		myChart.setSize(1300, 700);
-		myChart.setLegendShow(true);
-		myChart.setLegendPosition(1200, 300);
-		myChart.setAxisPaddingRight(150);
-		myChart.setLegendForLine('blue', '市北公司');
-		myChart.setLegendForLine('green', '市南公司');
-		myChart.setLegendForLine('gray', '市东公司');
+		
 	}
 	
 	myChart.draw();

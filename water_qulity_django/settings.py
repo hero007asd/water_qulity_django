@@ -71,8 +71,8 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-        # 'PASSWORD': '',
-        # 'HOST': '127.0.0.1',
+        # 'PASSWORD': 'honest1101',
+        # 'HOST': '192.168.8.65',
         'PORT': '3306',
     }
     # 'default': {
