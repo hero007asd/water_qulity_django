@@ -6,6 +6,7 @@ def __my_custome_sql(sql,*arg,**kword):
     if arg:
         cursor.execute(sql,[a for a in arg])
         print '##%s,param:%s' % (sql,a)
+        
     else:
         cursor.execute(sql)
     # row = cursor.fetchall()
@@ -51,11 +52,92 @@ def getOverView(city_name):
             AND TO_DAYS(NOW()) =  TO_DAYS(c.send_time) \
             WHERE a.area_full LIKE %s'
     param = '%s%s%s'% ('%',city_name,'%')
-    print '$$$city_name:%s' % city_name
-    print '$$$param:%s' % param
+    # print '$$$city_name:%s' % city_name
+    # print '$$$param:%s' % param
     return __my_custome_sql(sql,param)
 
 
 #=============================================
+def getStreetValue(type_value,street_id):
+    pre_sql = __pre_sql(type_value)
+    sql = pre_sql+',hour(a.send_time) as time \
+        from hardsocket_water_param a \
+        LEFT JOIN device_device b \
+        ON a.device_id = b.id \
+        LEFT JOIN device_street c \
+        ON b.street_id = c.id \
+        WHERE day(NOW()) = day(a.send_time) \
+        AND c.id = %s \
+        GROUP BY c.id,time'
+    return __my_custome_sql(sql,street_id)
+
+def __pre_ph_sql():
+    return 'SELECT IFNULL(round(AVG(a.ph),2),0) as ph'
+
+def __pre_turbidity_sql():
+    return 'SELECT IFNULL(round(AVG(a.turbidity),2),0) as turbidity'
+
+def __pre_conductivity_sql():
+    return 'SELECT IFNULL(round(AVG(a.conductivity),2),0) as conductivity'
+
+def __pre_do_sql():
+    return 'SELECT IFNULL(round(AVG(a.d_oxygen),2),0) as DO'
+
+def __pre_rc_sql():
+    return 'SELECT IFNULL(round(AVG(a.rc),2),0) as rc'
+
+operator = {'1':__pre_ph_sql,'2':__pre_turbidity_sql,'3':__pre_conductivity_sql,'4':__pre_do_sql,'5':__pre_rc_sql}
+
+def __pre_sql(type_value):
+    if callable(operator.get(type_value)):
+        return operator.get(type_value)()
+    else:
+        return None
 
 
+#=============================================
+def getCurStreetValue(type_value,street_name):
+    pre_sql = __pre_sql(type_value)
+    sql = pre_sql+',hour(a.send_time) as time \
+        from hardsocket_water_param a \
+        LEFT JOIN device_device b \
+        ON a.device_id = b.id \
+        LEFT JOIN device_street c \
+        ON b.street_id = c.id \
+        WHERE day(NOW()) = day(a.send_time) \
+        AND c.street_name LIKE %s \
+        GROUP BY c.id,time'
+    param = '%s%s%s'% ('%',street_name,'%')
+    # param = '%s'% street_name
+    return __my_custome_sql(sql,param)
+
+
+def getStreetsSql(area_id):
+    sql = 'SELECT a.id as street_id \
+            ,a.street_name as street_name \
+            FROM device_street a \
+            WHERE a.area_id = %s'
+    return __my_custome_sql(sql,area_id)
+
+def getStreetAvgValue(type_value,street_id):
+    pre_sql = __pre_sql(type_value)
+    sql = pre_sql+' from hardsocket_water_param a \
+        LEFT JOIN device_device b \
+        ON a.device_id = b.id \
+        LEFT JOIN device_street c \
+        ON b.street_id = c.id \
+        WHERE day(NOW()) = day(a.send_time) \
+        AND c.id = %s'
+    return __my_custome_sql(sql,street_id)
+
+def getCurStreetAvgValue(type_value,street_name):
+    pre_sql = __pre_sql(type_value)
+    sql = pre_sql+' from hardsocket_water_param a \
+        LEFT JOIN device_device b \
+        ON a.device_id = b.id \
+        LEFT JOIN device_street c \
+        ON b.street_id = c.id \
+        WHERE day(NOW()) = day(a.send_time) \
+        AND c.id = %s '
+    param = '%s%s%s'% ('%',street_name,'%')
+    return __my_custome_sql(sql,param)

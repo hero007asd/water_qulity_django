@@ -108,7 +108,7 @@ def showStreetValue(request):
     area_id = param['area_id']
     street_id = param['street_id']
     #TODO
-    results = __foo(value_type,area_id,street_id)
+    results = __foo(value_type,area_id,street_id,1)
     return HttpResponse(results)
 
 def showCurStreetValue(request):
@@ -118,44 +118,71 @@ def showCurStreetValue(request):
     elif('info' in request.GET):
         param = json.loads(request.GET['info'])
     value_type = param['value_type']
+    area_name = param['area_name']
+    street_name = param['street_name']
     #TODO
-    results = __foo(value_type)
+    results = __foo(value_type,area_name,street_name,2)
     return HttpResponse(results)
 
 def getStreets(request):
     print request.GET
     print request.POST
-    area_id = None
-    if('area_id' in request.POST):
-        area_id = request.POST['area_id']
-    elif('area_id' in request.GET):
-        area_id = request.GET['area_id']
+    if('info' in request.POST):
+        param = json.loads(request.POST['info'])
+    elif('info' in request.GET):
+        param = json.loads(request.GET['info'])
+    area_id = param['area_id']
     #TODO use area_id get streets
-    obj = [{'street_id':'20001','street_name':'七宝镇'},{'street_id':'20002','street_name':'龙柏街道'},{'street_id':'20003','street_name':'九亭镇'},]
+    # obj = [{'street_id':'20001','street_name':'七宝镇'},{'street_id':'20002','street_name':'龙柏街道'},{'street_id':'20003','street_name':'九亭镇'},]
+    obj = raw_sql_mobile.getStreetsSql(area_id)
     results = json.dumps(obj,ensure_ascii=False)
     return HttpResponse(results)
 
 
-def __phJson(area_id,street_id):
-    obj = {'type':'1','value':[{'ph':'5.6','time':'1'},{'ph':'7','time':'2'},{'ph':'8','time':'3'},{'ph':'7.2','time':'4'},{'ph':'9','time':'5'},{'ph':'5.7','time':'6'},{'ph':'8','time':'7'},{'ph':'5.7','time':'8'},{'ph':'5.7','time':'9'},{'ph':'6.0','time':'10'},{'ph':'7.0','time':'11'},{'ph':'5.7','time':'12'},{'ph':'5.7','time':'13'},{'ph':'5.7','time':'14'},{'ph':'5.7','time':'15'},{'ph':'5.7','time':'16'},{'ph':'12.0','time':'17'},{'ph':'5.0','time':'18'},{'ph':'5.7','time':'19'},{'ph':'5.7','time':'20'},{'ph':'6.9','time':'21'},{'ph':'5.7','time':'22'},{'ph':'5.7','time':'23'},{'ph':'5.7','time':'24'}]}
+def __phJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:
+        obj = {'type':'1','value':raw_sql_mobile.getStreetValue('1',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('1',street_id)}
+    else:
+        obj = {'type':'1','value':raw_sql_mobile.getCurStreetValue('1',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('1',street_id)}
     return json.dumps(obj)
-def __turbidityJson(area_id,street_id):
-    obj = {'type':'2','value':[{'turbidity':'5.6','time':'1'},{'turbidity':'5.7','time':'2'}]}
+
+def __turbidityJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:    
+        obj = {'type':'2','value':raw_sql_mobile.getStreetValue('2',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('2',street_id)}
+    else:    
+        obj = {'type':'2','value':raw_sql_mobile.getCurStreetValue('2',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('2',street_id)}
+
     return json.dumps(obj)
-def __conductivityJson(area_id,street_id):
-    obj = {'type':'3','value':[{'conductivity':'5.6','time':'1'},{'conductivity':'5.7','time':'2'}]}
+
+def __conductivityJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:
+        obj = {'type':'3','value':raw_sql_mobile.getStreetValue('3',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('3',street_id)}
+    else:
+        obj = {'type':'3','value':raw_sql_mobile.getCurStreetValue('3',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('3',street_id)}
+
     return json.dumps(obj)
-def __doJson(area_id,street_id):
-    obj = {'type':'4','value':[{'DO':'5.6','time':'1'},{'DO':'5.7','time':'2'}]}
+
+def __doJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:
+        obj = {'type':'4','value':raw_sql_mobile.getStreetValue('4',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('4',street_id)}
+    else:
+        obj = {'type':'4','value':raw_sql_mobile.getCurStreetValue('4',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('4',street_id)}
+
     return json.dumps(obj)
-def __rcJson(area_id,street_id):
-    obj = {'type':'5','value':[{'rc':'5.6','time':'1'},{'rc':'5.7','time':'2'}]}
+
+def __rcJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:
+        obj = {'type':'5','value':raw_sql_mobile.getStreetValue('5',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('5',street_id)}
+    else:
+        obj = {'type':'5','value':raw_sql_mobile.getCurStreetValue('5',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('5',street_id)}
+
     return json.dumps(obj)
+
 operator = {'1':__phJson,'2':__turbidityJson,'3':__conductivityJson,'4':__doJson,'5':__rcJson}
 
-def __foo(bar,area_id,street_id):
+def __foo(bar,area_id,street_id,id_or_name):
     if callable(operator.get(bar)):
-        return operator.get(bar)(area_id,street_id)
+        return operator.get(bar)(area_id,street_id,id_or_name)
     else:
         return None
     

@@ -33,9 +33,9 @@ def getCorpTrend(request):
     obj = None
     if reports_type == '1':
         obj = raw_sql.getCorpDayTrend(city_id)
-    elif reprots_type == '2':
+    elif reports_type == '2':
         obj = raw_sql.getCorpWeekTrend(city_id)
-    elif reprots_type == '3':
+    elif reports_type == '3':
         obj = raw_sql.getCorpMonthTrend(city_id)
     
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
@@ -47,9 +47,9 @@ def getSubCorpTrend(request):
     obj = None
     if reports_type == '1':
         obj = raw_sql.getSubCorpDayTrend(corp_id)
-    elif reprots_type == '2':
+    elif reports_type == '2':
         obj = raw_sql.getSubCorpWeekTrend(corp_id)
-    elif reprots_type == '3':
+    elif reports_type == '3':
         obj = raw_sql.getSubCorpMonthTrend(corp_id)
 
     results = json.dumps(obj,ensure_ascii=False,separators=(',',':'))
