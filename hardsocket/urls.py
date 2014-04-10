@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^showStreetValue/$',viewsmobile.showStreetValue),
     url(r'^showCurStreetValue/$',viewsmobile.showCurStreetValue),
     url(r'^getStreets/$',viewsmobile.getStreets),
+    url(r'^showStreetOverview/$',viewsmobile.showStreetOverview),
     #for web
     url(r'^index/$',TemplateView.as_view(template_name='hardsocket/index.html'),name='index'),
     url(r'^aa/$',TemplateView.as_view(template_name='hardsocket/aa.html'),name='aa'),

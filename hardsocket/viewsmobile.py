@@ -8,52 +8,108 @@ import json
 #===================for mobile===============================
 
 '''
-# TODO fix the range of some params of the water
+# 增加orp值，修改status的范围 20140406
 '''
 def showCurOverview(request):
-    address = None
-    if 'address' in request.POST:
-        address = request.POST['address']
-    elif 'address' in request.GET:
-        address = request.GET['address']
-    obj = raw_sql_mobile.getCurOverView(address)
+    if('info' in request.POST):
+        param = json.loads(request.POST['info'])
+    elif('info' in request.GET):
+        param = json.loads(request.GET['info'])
+    obj = raw_sql_mobile.getCurOverView(param['address'])
     cur = obj[0]
     obj[0]['cur_status'] = 1
-    if int(cur['cur_ph']) >6 and int(cur['cur_ph']) < 8:
+    if float(cur['cur_ph']) >=6.5 and float(cur['cur_ph']) <= 8.5:
         obj[0]['ph_status'] = 1
     else: 
         obj[0]['ph_status'] = 0
         obj[0]['cur_status'] = 0
 
-    if int(cur['cur_turbidity']) >6 and int(cur['cur_turbidity']) < 8:
+    if float(cur['cur_turbidity']) <= 0.5:
         obj[0]['turbidity_status'] = 1
     else: 
         obj[0]['turbidity_status'] = 0
-        obj[0]['cur_status'] = 1
+        obj[0]['cur_status'] = 0
 
-    if int(cur['cur_DO']) >6 and int(cur['cur_DO']) < 8:
+    if float(cur['cur_DO']) >=6 and float(cur['cur_DO']) <= 20:
         obj[0]['do_status'] = 1
     else :
         obj[0]['do_status'] = 0
-        obj[0]['cur_status'] = 1
+        obj[0]['cur_status'] = 0
 
-    if int(cur['cur_rc']) >6 and int(cur['cur_rc']) < 8:
+    if float(cur['cur_rc']) >=0.3 and float(cur['cur_rc']) <=0.5:
         obj[0]['rc_status'] = 1
     else :
         obj[0]['rc_status'] = 0
-        obj[0]['cur_status'] = 1
+        obj[0]['cur_status'] = 0
 
-    if int(cur['cur_conductivity']) >6 and int(cur['cur_conductivity']) < 8:
+    if float(cur['cur_conductivity']) >=125 and float(cur['cur_conductivity']) <=1250:
         obj[0]['conductivity_status'] = 1
     else :
         obj[0]['conductivity_status'] = 0
-        obj[0]['cur_status'] = 1
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_orp']) >= 150 and float(cur['cur_orp'])<=500:
+        obj[0]['orp_status'] = 1
+    else:
+        obj[0]['orp_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    results = json.dumps(obj[0],ensure_ascii=False)
+
+    return HttpResponse(results)
+'''
+# 增加orp值，修改status的范围 20140406
+'''
+def showStreetOverview(request):
+    if('info' in request.POST):
+        param = json.loads(request.POST['info'])
+    elif('info' in request.GET):
+        param = json.loads(request.GET['info'])
+    obj = raw_sql_mobile.getStreetOverView(param['street_id'])
+    cur = obj[0]
+    obj[0]['cur_status'] = 1
+    if float(cur['cur_ph']) >=6.5 and float(cur['cur_ph']) <= 8.5:
+        obj[0]['ph_status'] = 1
+    else: 
+        obj[0]['ph_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_turbidity']) <= 0.5:
+        obj[0]['turbidity_status'] = 1
+    else: 
+        obj[0]['turbidity_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_DO']) >=6 and float(cur['cur_DO']) <= 20:
+        obj[0]['do_status'] = 1
+    else :
+        obj[0]['do_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_rc']) >=0.3 and float(cur['cur_rc']) <=0.5:
+        obj[0]['rc_status'] = 1
+    else :
+        obj[0]['rc_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_conductivity']) >=125 and float(cur['cur_conductivity']) <=1250:
+        obj[0]['conductivity_status'] = 1
+    else :
+        obj[0]['conductivity_status'] = 0
+        obj[0]['cur_status'] = 0
+
+    if float(cur['cur_orp']) >= 150 and float(cur['cur_orp'])<=500:
+        obj[0]['orp_status'] = 1
+    else:
+        obj[0]['orp_status'] = 0
+        obj[0]['cur_status'] = 0
     results = json.dumps(obj[0],ensure_ascii=False)
 
     return HttpResponse(results)
 
+
 '''
-# TODO fix the range of some params of the water
+# 增加orp值，修改status的范围 20140406
 '''
 def showOverview(request):
     param = None
@@ -65,35 +121,41 @@ def showOverview(request):
     obj = raw_sql_mobile.getOverView(city)
     cur = obj[0]
     obj[0]['ov_status'] = 1
-    if int(cur['ov_ph']) >6 and int(cur['ov_ph']) < 8:
+    if float(cur['ov_ph']) >=6.5 and float(cur['ov_ph']) <= 8.5:
         obj[0]['ph_status'] = 1
     else: 
         obj[0]['ph_status'] = 0
         obj[0]['ov_status'] = 0
 
-    if int(cur['ov_turbidity']) >6 and int(cur['ov_turbidity']) < 8:
+    if float(cur['ov_turbidity']) <=0.5:
         obj[0]['turbidity_status'] = 1
     else: 
         obj[0]['turbidity_status'] = 0
-        obj[0]['ov_status'] = 1
+        obj[0]['ov_status'] = 0
 
-    if int(cur['ov_DO']) >6 and int(cur['ov_DO']) < 8:
+    if float(cur['ov_DO']) >=6 and float(cur['ov_DO']) <=20:
         obj[0]['do_status'] = 1
     else :
         obj[0]['do_status'] = 0
-        obj[0]['ov_status'] = 1
+        obj[0]['ov_status'] = 0
 
-    if int(cur['ov_rc']) >6 and int(cur['ov_rc']) < 8:
+    if float(cur['ov_rc']) >=0.3 and float(cur['ov_rc']) <=0.5:
         obj[0]['rc_status'] = 1
     else :
         obj[0]['rc_status'] = 0
-        obj[0]['ov_status'] = 1
+        obj[0]['ov_status'] = 0
 
-    if int(cur['ov_conductivity']) >6 and int(cur['ov_conductivity']) < 8:
+    if float(cur['ov_conductivity']) >=125 and float(cur['ov_conductivity']) <=1250:
         obj[0]['conductivity_status'] = 1
     else :
         obj[0]['conductivity_status'] = 0
-        obj[0]['ov_status'] = 1
+        obj[0]['ov_status'] = 0
+
+    if float(cur['ov_orp']) >= 150 and float(cur['ov_orp'])<=500:
+        obj[0]['orp_status'] = 1
+    else:
+        obj[0]['orp_status'] = 0
+        obj[0]['ov_status'] = 0
     # obj = {'ov_ph':'6.9','ov_turbidity':'0.8','ov_conductivity':'1.2','ov_DO':'4','ov_rc':'0.4','ov_status':'1','ph_status':'1','turbidity_status':'1','conductivity_status':'1','do_status':'1','rc_status':'1'}
     results = json.dumps(obj[0],ensure_ascii=False)
     return HttpResponse(results)

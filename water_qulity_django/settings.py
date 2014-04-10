@@ -69,10 +69,10 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
         'NAME': 'water_quanlity',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        # 'PASSWORD': 'honest1101',
-        # 'HOST': '192.168.8.65',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost',
+        'PASSWORD': 'honest1101',
+        'HOST': '192.168.8.65',
         'PORT': '3306',
     }
     # 'default': {
@@ -105,13 +105,13 @@ STATICFILES_DIRS=(
     os.path.join(BASE_DIR,'assets'),
     os.path.join(BASE_DIR,'my_static'),
     )
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-)
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.core.context_processors.auth',
+#     'django.core.context_processors.debug',
+#     'django.core.context_processors.i18n',
+#     'django.core.context_processors.media',
+#     'django.core.context_processors.request',
+# )
 # ADMIN_MEDIA_PREFIX = '/static/admin/'
 LOGGING = {
     'version':1,

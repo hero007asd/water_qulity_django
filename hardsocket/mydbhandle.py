@@ -65,8 +65,11 @@ def add_to_db(rec_data):
     sign = ''
     if orp0 == 1:
         sign = '-'
+    #----update by tommy 20140410------
     orp_integral = '%s%s%s' % (hex(orp1[0]).replace('0x',''),hex(orp1[1]).replace('0x',''),hex(orp1[2]).replace('0x',''))
-    orp = '%s%d.%s%s' % (sign,int(orp_integral),orp2,orp3)
+    orp = '%s%d.%s%s' % (sign,int(orp_integral,16),orp2,orp3)
+    # orp = '%s%s.%s%s' % (sign,orp1,orp2,orp3)
+
     # print 'ph:%s' % ph
     # print 'turbidity:%s' % turbidity
     # print 'rc:%s' % rc

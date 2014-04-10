@@ -24,6 +24,7 @@ def getCurOverView(street_name):
               ,IFNULL(round(avg(b.conductivity),2),0) as cur_conductivity \
               ,IFNULL(round(avg(b.d_oxygen),2),0) as cur_DO \
               ,IFNULL(round(avg(b.rc),2),0) as cur_rc \
+              ,IFNULL(round(avg(b.orp),2),0) as cur_orp \
               ,d.corp_name as water_work_name \
               ,d.tel_no as water_work_phone \
             FROM device_device a \
@@ -34,8 +35,30 @@ def getCurOverView(street_name):
             ON a.area_id = c.id \
             LEFT JOIN device_watercorp d \
             ON a.corp_id = d.id \
-            WHERE c.area_name = %s'
-    return __my_custome_sql(sql,street_name)
+            WHERE c.area_name LIKE %s'
+    param = '%s%s%s'% ('%',street_name,'%')
+    return __my_custome_sql(sql,param)
+
+#=============================================
+def getStreetOverView(street_id):
+    sql = 'SELECT IFNULL(round(avg(b.ph),2),0) as cur_ph \
+              ,IFNULL(round(avg(b.turbidity),2),0) as cur_turbidity \
+              ,IFNULL(round(avg(b.conductivity),2),0) as cur_conductivity \
+              ,IFNULL(round(avg(b.d_oxygen),2),0) as cur_DO \
+              ,IFNULL(round(avg(b.rc),2),0) as cur_rc \
+              ,IFNULL(round(avg(b.orp),2),0) as cur_orp \
+              ,d.corp_name as water_work_name \
+              ,d.tel_no as water_work_phone \
+            FROM device_device a \
+            LEFT JOIN hardsocket_water_param b \
+            ON a.id = b.device_id \
+            AND TO_DAYS(b.send_time) = TO_DAYS(NOW()) \
+            LEFT JOIN device_street c \
+            ON a.street_id = c.id \
+            LEFT JOIN device_watercorp d \
+            ON a.corp_id = d.id \
+            WHERE c.id = %s'
+    return __my_custome_sql(sql,street_id)
 
 #=============================================
 def getOverView(city_name):
@@ -44,6 +67,7 @@ def getOverView(city_name):
                 ,IFNULL(round(avg(c.conductivity),2),0) as ov_conductivity \
                 ,IFNULL(round(avg(c.d_oxygen),2),0) as ov_DO \
                 ,IFNULL(round(avg(c.rc),2),0) as ov_rc \
+                ,IFNULL(round(avg(c.orp),2),0) as ov_orp \
             FROM device_area a \
             LEFT JOIN device_device b \
             ON a.id = b.area_id  \
@@ -71,6 +95,7 @@ def getStreetValue(type_value,street_id):
         GROUP BY c.id,time'
     return __my_custome_sql(sql,street_id)
 
+#====================增加orp选项=========================
 def __pre_ph_sql():
     return 'SELECT IFNULL(round(AVG(a.ph),2),0) as ph'
 
@@ -85,8 +110,10 @@ def __pre_do_sql():
 
 def __pre_rc_sql():
     return 'SELECT IFNULL(round(AVG(a.rc),2),0) as rc'
+def __pre_orp_sql():
+    return 'SELECT IFNULL(round(AVG(a.orp),2),0) as orp'
 
-operator = {'1':__pre_ph_sql,'2':__pre_turbidity_sql,'3':__pre_conductivity_sql,'4':__pre_do_sql,'5':__pre_rc_sql}
+operator = {'1':__pre_ph_sql,'2':__pre_turbidity_sql,'3':__pre_conductivity_sql,'4':__pre_do_sql,'5':__pre_rc_sql,'6':__pre_orp_sql}
 
 def __pre_sql(type_value):
     if callable(operator.get(type_value)):
@@ -138,6 +165,6 @@ def getCurStreetAvgValue(type_value,street_name):
         LEFT JOIN device_street c \
         ON b.street_id = c.id \
         WHERE day(NOW()) = day(a.send_time) \
-        AND c.id = %s '
+        AND c.street_name LIKE %s  '
     param = '%s%s%s'% ('%',street_name,'%')
     return __my_custome_sql(sql,param)
