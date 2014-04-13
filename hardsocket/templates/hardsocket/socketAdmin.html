@@ -5,10 +5,14 @@
 <script type="text/javascript" src="/site_media/js/jquery.min.js"></script>
 </head>
 <body>
-	<input id="manipulate" type="button" name="manipulate" value="开启"></input>
+	<input id="wifimodel" type="button" name="manipulate" value="wifi模式开启"></input>
+	<input id="gsmmodel" type="button" name="manipulate" value="gsm模式开启"></input>
 <script type="text/javascript">
-    $("#manipulate").click(function(){
-        $.ajax({url:"{%url 'hardsocket:manipulateSocket'%}"});
+    $("#wifimodel").click(function(){
+        $.ajax({url:"{%url 'hardsocket:openWifiSocket'%}"});
+    });
+    $("#gsmmodel").click(function(){
+        $.ajax({url:"{%url 'hardsocket:openGsmSocket'%}"});
     });
 </script>
 </body>

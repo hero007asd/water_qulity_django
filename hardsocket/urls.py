@@ -3,7 +3,8 @@ from django.conf.urls import patterns, url
 from django.views.generic.base import TemplateView
 from hardsocket import  views,viewsmobile,viewsweb,viewsweb_new
 urlpatterns = patterns('',
-    url(r'^manipulateSocket/$',views.manipulate,name='manipulateSocket'),
+    url(r'^openwifisocket/$',views.openWifiSocket,name='openWifiSocket'),
+    url(r'^opengsmsocket/$',views.openGsmSocket,name='openGsmSocket'),
     url(r'^socketAdmin/$',TemplateView.as_view(template_name='hardsocket/socketAdmin.html'),name='socketAdmin'),
     url(r'^test_log/$',views.test_log),
     #for mobile 

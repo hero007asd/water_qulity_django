@@ -15,7 +15,12 @@ def showCurOverview(request):
         param = json.loads(request.POST['info'])
     elif('info' in request.GET):
         param = json.loads(request.GET['info'])
-    obj = raw_sql_mobile.getCurOverView(param['address'])
+    #change unicode
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
+    obj = raw_sql_mobile.getCurOverView(param['address'].split('区')[1])
     cur = obj[0]
     obj[0]['cur_status'] = 1
     if float(cur['cur_ph']) >=6.5 and float(cur['cur_ph']) <= 8.5:

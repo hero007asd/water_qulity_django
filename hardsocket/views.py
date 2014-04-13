@@ -1,19 +1,28 @@
 # -*- coding: UTF-8 -*-
 from django.shortcuts import render, render_to_response
-from hardsocket.mymultiserver import openSocket,closeSocket
+from hardsocket import mymultiserver
+from hardsocket.gsmsocket import gsmsocketserver
 from django.http import HttpResponse
 import json
 import logging
 #====================About socket ============================================
-def manipulate(request):
+def openGsmSocket(request):
     try:
-        openSocket()
+        gsmsocketserver.openSocket()
     except Exception, e:
         return HttpResponse('open socket is already open')
     return HttpResponse('open socket success')
 
-def close(request):
-    closeSocket()
+
+def openWifiSocket(request):
+    try:
+        mymultiserver.openSocket()
+    except Exception, e:
+        return HttpResponse('open socket is already open')
+    return HttpResponse('open socket success')
+
+def closeWifiSocket(request):
+    mymultiserver.closeSocket()
 
 #======================client show ==================================================
 # def socketAdmin(request):
