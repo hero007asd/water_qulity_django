@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django.db import models as m
 from device import models
+from django.utils.html import format_html
 
 #water_quality_log table     
 class Water_param(m.Model):
@@ -17,12 +18,21 @@ class Water_param(m.Model):
     d_h2so4 = m.CharField(max_length=20,blank=True,null=True,verbose_name='h2so4浓度')
     d_naoh = m.CharField(max_length=20,blank=True,null=True,verbose_name='naoh浓度')
     orp = m.CharField(max_length=20,blank=True,null=True,verbose_name='orp')
-    is_ok = m.IntegerField(verbose_name='是否合格')
+    is_ok = m.IntegerField(verbose_name='是否合格(0:不合格,1:合格)')
     send_time = m.DateTimeField(auto_now_add=True,verbose_name='接受时间')
 
     def send_time_fmt(self):
         return self.send_time.strftime('%Y-%m-%d %H:%M:%S')
     send_time_fmt.short_description = '接受时间'
+    send_time_fmt.admin_order_field = 'send_time'
+
+    def is_ok_fmt(self):
+        if self.is_ok == 1:
+            return format_html('<span style="color:green">合格</span>')
+        else: return format_html('<span style="color:red">不合格</span>')
+    is_ok_fmt.allow_tags = True
+    is_ok_fmt.admin_order_field = 'is_ok'
+    is_ok_fmt.short_description = '是否合格'
 
 
     def __str__(self):
