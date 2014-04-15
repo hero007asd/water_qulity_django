@@ -6,9 +6,10 @@ from django.http import HttpResponse
 from hardsocket import raw_sql_mobile
 import json
 #===================for mobile===============================
-
+ROAD_NAME = ['道','路','街']
 '''
-# 增加orp值，修改status的范围 20140406
+增加orp值，修改status的范围 20140406
+增加修改road的split选项 20140415
 '''
 def showCurOverview(request):
     if('info' in request.POST):
@@ -20,7 +21,13 @@ def showCurOverview(request):
     reload(sys)
     sys.setdefaultencoding('utf-8')
 
-    obj = raw_sql_mobile.getCurOverView(param['address'].split('区')[1])
+    road = ''
+    for i in ROAD_NAME:
+        if i in param['address']:
+            road = param['address'].split('区')[1].split(i)[0]
+    obj = raw_sql_mobile.getCurOverView(road)
+    if not obj:
+        return HttpResponse(None)
     cur = obj[0]
     obj[0]['cur_status'] = 1
     if float(cur['cur_ph']) >=6.5 and float(cur['cur_ph']) <= 8.5:
@@ -245,7 +252,15 @@ def __rcJson(area_id,street_id,id_or_name):
 
     return json.dumps(obj)
 
-operator = {'1':__phJson,'2':__turbidityJson,'3':__conductivityJson,'4':__doJson,'5':__rcJson}
+def __orpJson(area_id,street_id,id_or_name):
+    if id_or_name == 1:
+        obj = {'type':'6','value':raw_sql_mobile.getStreetValue('6',street_id),'avgValue':raw_sql_mobile.getStreetAvgValue('6',street_id)}
+    else:
+        obj = {'type':'6','value':raw_sql_mobile.getCurStreetValue('6',street_id),'avgValue':raw_sql_mobile.getCurStreetAvgValue('6',street_id)}
+
+    return json.dumps(obj)
+
+operator = {'1':__phJson,'2':__turbidityJson,'3':__conductivityJson,'4':__doJson,'5':__rcJson,'6':__orpJson}
 
 def __foo(bar,area_id,street_id,id_or_name):
     if callable(operator.get(bar)):
