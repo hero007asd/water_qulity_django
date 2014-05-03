@@ -59,7 +59,8 @@ class Device(m.Model):
 	sub_corp = m.ForeignKey(WaterSubCorp,blank=True,null=True,verbose_name=u'供水分公司')
 	type_id = m.IntegerField(verbose_name=u'模块')
 	status_id = m.IntegerField(verbose_name=u'状态')
-	Period_send = m.IntegerField(verbose_name=u'发送间隔(s)')
+	Period_send = m.IntegerField(blank=True,null=True,verbose_name=u'发送间隔(s)')
+	period_collect = m.IntegerField(blank=True,null=True,verbose_name=u'采样间隔')
 	road_name = m.CharField(max_length=200,blank=True,null=True,verbose_name=u'所在街道')
 	# add by tommy 20140317
 	x_pos = m.CharField(max_length=10,blank=True,null=True)

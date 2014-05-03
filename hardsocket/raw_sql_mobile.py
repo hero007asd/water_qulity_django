@@ -6,14 +6,10 @@ add sql's log: and hardsocket_water_param.is_ok =1
 '''
 def __my_custome_sql(sql,*arg,**kword):
     cursor = connection.cursor()
-    # print '##$$$$arg:%s' % arg
     if arg:
         cursor.execute(sql,[a for a in arg])
-        # print '##%s,param:%s' % (sql,a)
-        
     else:
         cursor.execute(sql)
-    # row = cursor.fetchall()
     desc = cursor.description
     return [
         dict(zip([col[0] for col in desc], row))
@@ -34,7 +30,6 @@ def getCurOverView(street_name):
             FROM device_device a \
             LEFT JOIN hardsocket_water_param b \
             ON a.id = b.device_id \
-            AND b.is_ok = 1 \
             AND TO_DAYS(b.send_time) = TO_DAYS(NOW()) \
             LEFT JOIN device_street f \
             ON a.street_id = f.id \
@@ -60,7 +55,6 @@ def getStreetOverView(street_id):
             FROM device_device a \
             LEFT JOIN hardsocket_water_param b \
             ON a.id = b.device_id \
-            AND b.is_ok = 1 \
             AND TO_DAYS(b.send_time) = TO_DAYS(NOW()) \
             LEFT JOIN device_street c \
             ON a.street_id = c.id \
@@ -84,12 +78,9 @@ def getOverView(city_name):
             ON a.id = b.area_id  \
             LEFT JOIN hardsocket_water_param c \
             ON b.id = c.device_id \
-            AND c.is_ok = 1 \
             AND TO_DAYS(NOW()) =  TO_DAYS(c.send_time) \
             WHERE a.area_full LIKE %s'
     param = '%s%s%s'% ('%',city_name,'%')
-    # print '$$$city_name:%s' % city_name
-    # print '$$$param:%s' % param
     return __my_custome_sql(sql,param)
 
 
@@ -103,7 +94,6 @@ def getStreetValue(type_value,street_id):
         LEFT JOIN device_street c \
         ON b.street_id = c.id \
         WHERE day(NOW()) = day(a.send_time) \
-        AND a.is_ok = 1 \
         AND c.id = %s \
         GROUP BY c.id,time'
     return __my_custome_sql(sql,street_id)
@@ -146,10 +136,8 @@ def getCurStreetValue(type_value,street_name):
         ON b.street_id = c.id \
         WHERE day(NOW()) = day(a.send_time) \
         AND c.street_name LIKE %s \
-        AND a.is_ok = 1 \
         GROUP BY c.id,time'
     param = '%s%s%s'% ('%',street_name,'%')
-    # param = '%s'% street_name
     return __my_custome_sql(sql,param)
 
 
@@ -168,7 +156,6 @@ def getStreetAvgValue(type_value,street_id):
         LEFT JOIN device_street c \
         ON b.street_id = c.id \
         WHERE day(NOW()) = day(a.send_time) \
-        AND a.is_ok = 1 \
         AND c.id = %s'
     return __my_custome_sql(sql,street_id)
 
@@ -180,7 +167,6 @@ def getCurStreetAvgValue(type_value,street_name):
         LEFT JOIN device_street c \
         ON b.street_id = c.id \
         WHERE day(NOW()) = day(a.send_time) \
-        AND a.is_ok = 1 \
         AND c.street_name LIKE %s  '
     param = '%s%s%s'% ('%',street_name,'%')
     return __my_custome_sql(sql,param)

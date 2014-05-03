@@ -5,9 +5,11 @@ created by tommy_shi
 @time 21:55
 @desc handle socket with ascii's text
 '''
+import socketsql
+
 COMMON = ','
 starttag = 'AT+'
-endtag = '\\r\\n'
+endtag = '\r\n'
 
 def handle_data(data):
     if data and len(data.split(COMMON)) < 3:
@@ -20,12 +22,12 @@ def handle_data(data):
     arr = data.split(COMMON,2)
     did = arr[0][3:]
 
-    if len(did) != 16:
-    	raise ValueError('device id length is wrong')
+    # if len(did) != 16:
+    # 	raise ValueError('device id length is wrong')
 
     rtArr = []
     if arr[1] == '10':
-		rtArr = __get10MD(arr[2])
+		rtArr = __get10MD(arr[2],did)
 		if rtArr is None: 
 			raise ValueError('receive cmd=10 data,error happend') 
     elif arr[1] == '20':
@@ -42,24 +44,27 @@ def handle_data(data):
     rtArr.append(endtag)
     return COMMON.join(rtArr)
 
-def __get10MD(data,cmd='0',toservertime='300',collecttime='1'):
-	rtArr = []
-	myarr = data.split(COMMON)
-	if len(myarr) != 2:return None
-	config = myarr[0]
+def __get10MD(data,did,cmd='0',toservertime='300',collecttime='1'):
+    rtArr = []
+    myarr = data.split(COMMON)
+    if len(myarr) != 2:return None
+    config = myarr[0]
 
-	if config == '0':#unconfiged
-	    rtArr.extend([cmd,toservertime,collecttime])
-	elif config == '1':#already configed
-		rtArr.append(cmd)
-	return rtArr
+    if config == '0':#unconfiged
+        #get period from db
+        c = socketsql.getDeviceParam(did)
+        if c:
+            (toservertime,collecttime) = c
+        rtArr.extend([cmd,str(toservertime),str(collecttime)])
+    elif config == '1':#already configed
+        rtArr.append(cmd)
+    return rtArr
 
 def __get20MD(data,did,cmd='0'):#0:nothing 1:to update 2:to get rightnow
     rtarr = []
     myarr = data.split(COMMON)
     if len(myarr) != 13: return None
     #insert into db
-    import socketsql
     socketsql.model_save(myarr,did)
 
     rtarr.append(cmd)

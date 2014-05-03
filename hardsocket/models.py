@@ -28,8 +28,8 @@ class Water_param(m.Model):
 
     def is_ok_fmt(self):
         if self.is_ok == 1:
-            return format_html('<span style="color:green">合格</span>')
-        else: return format_html('<span style="color:red">不合格</span>')
+            return format_html('<span style="color:green">正常</span>')
+        else: return format_html('<span style="color:red">不正常</span>')
     is_ok_fmt.allow_tags = True
     is_ok_fmt.admin_order_field = 'is_ok'
     is_ok_fmt.short_description = '是否合格'
