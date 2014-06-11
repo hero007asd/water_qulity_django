@@ -27,11 +27,11 @@ def model_save(arrparam,did):
         water_param.orp =arrparam[11]
         ok_tag = 1 #ok
         if [i for i in arrparam if str(i).upper()=='FFFF']:
-        	ok_tag = 0
+            ok_tag = 0
         water_param.is_ok = ok_tag
         water_param.save()
     else:
-    	pass
+        pass
 
 def getDeviceParam(did):
     medevice = _.models.Device.objects.get(device_id=did)

@@ -6,6 +6,7 @@ created by tommy_shi
 @desc handle socket with ascii's text
 '''
 import socketsql
+from django.core.management import call_command
 
 COMMON = ','
 starttag = 'AT+'
@@ -13,31 +14,31 @@ endtag = '\r\n'
 
 def handle_data(data):
     if data and len(data.split(COMMON)) < 3:
-		raise ValueError('receive data,error happend')
+        raise ValueError('receive data,error happend')
     if not data.startswith(starttag):
         raise ValueError('wrong start tag')
     if not data.endswith(endtag):
-    	raise ValueError('wrong end tag')
+        raise ValueError('wrong end tag')
 
     arr = data.split(COMMON,2)
     did = arr[0][3:]
 
     # if len(did) != 16:
-    # 	raise ValueError('device id length is wrong')
+    #   raise ValueError('device id length is wrong')
 
     rtArr = []
     if arr[1] == '10':
-		rtArr = __get10MD(arr[2],did)
-		if rtArr is None: 
-			raise ValueError('receive cmd=10 data,error happend') 
+        rtArr = __get10MD(arr[2],did)
+        if rtArr is None: 
+            raise ValueError('receive cmd=10 data,error happend') 
     elif arr[1] == '20':
-		rtArr = __get20MD(arr[2],did)
-		if rtArr is None: 
-			raise ValueError('receive cmd=20 data,error happend') 
+        rtArr = __get20MD(data)
+        if rtArr is None: 
+            raise ValueError('receive cmd=20 data,error happend') 
     elif arr[1] == '21':
-		rtArr = __get21MD(arr[2])
-		if rtArr is None: 
-			raise ValueError('receive cmd=21 data,error happend') 
+        rtArr = __get21MD(arr[2])
+        if rtArr is None: 
+            raise ValueError('receive cmd=21 data,error happend') 
 
     rtArr.insert(0,arr[0])
     rtArr.insert(1,arr[1])
@@ -45,6 +46,7 @@ def handle_data(data):
     return COMMON.join(rtArr)
 
 def __get10MD(data,did,cmd='0',toservertime='300',collecttime='1'):
+    '''TODO use redis to get servertime & collectime'''
     rtArr = []
     myarr = data.split(COMMON)
     if len(myarr) != 2:return None
@@ -60,12 +62,14 @@ def __get10MD(data,did,cmd='0',toservertime='300',collecttime='1'):
         rtArr.append(cmd)
     return rtArr
 
-def __get20MD(data,did,cmd='0'):#0:nothing 1:to update 2:to get rightnow
+def __get20MD(data,cmd='0'):#0:nothing 1:to update 2:to get rightnow
+    '''use gearman to insert'''
     rtarr = []
     myarr = data.split(COMMON)
-    if len(myarr) != 13: return None
-    #insert into db
-    socketsql.model_save(myarr,did)
+    if len(myarr) != 15: return None
+    #update by tommy 2014-6-8
+    # socketsql.model_save(myarr,did)
+    call_command('gearman_submit_job', 'socket_insert', data)
 
     rtarr.append(cmd)
     return rtarr
@@ -79,9 +83,9 @@ def __get21MD(data,cmd='0'):
     return rtarr
 
 if __name__ == '__main__':
-	pass
+    pass
     # handle_data('ahandle_data')
-	# handle_data('AT+00112233AABBCCDD,20,6.50,50.00,0.25,35.30,0.15,200.00,25.00,11.10,2.50,0.28,0.80,-508.00,\\r\\n')
-	# handle_data('AT+00112233AABBCCDD,10,0,\\r\\n')
-	# handle_data('AT+00112233AABBCCDD,10,1,\\r\\n')
-	# handle_data('AT+00112233AABBCCDD,21,1,1,0,0,\\r\\n')
+    # handle_data('AT+00112233AABBCCDD,20,6.50,50.00,0.25,35.30,0.15,200.00,25.00,11.10,2.50,0.28,0.80,-508.00,\\r\\n')
+    # handle_data('AT+00112233AABBCCDD,10,0,\\r\\n')
+    # handle_data('AT+00112233AABBCCDD,10,1,\\r\\n')
+    # handle_data('AT+00112233AABBCCDD,21,1,1,0,0,\\r\\n')
