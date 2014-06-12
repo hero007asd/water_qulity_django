@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from water_qulity_django import settings
+from conf import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
